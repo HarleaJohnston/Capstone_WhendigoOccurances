@@ -1,0 +1,17 @@
+.navColor{
+  background-color: #766B4E;
+  color: #CBC4AE;
+}
+
+.App{
+background-color: #FDF8E8;
+background-image: url('logo.svg');
+}
+
+.bannerSize{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+
