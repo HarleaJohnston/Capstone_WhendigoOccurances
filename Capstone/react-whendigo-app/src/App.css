@@ -1,0 +1,97 @@
+@font-face {
+  font-family: HeaderFont;
+  src: url(./Fonts/OldNewspaperTypes.ttf);
+}
+
+@font-face {
+  font-family: Font;
+  src: url(./Fonts/Spotlight\ Typewriter\ NC.ttf)
+}
+
+.App{
+  background-color: #5f400d;
+  }
+
+.bannerSize{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.navColor{
+  background-color: #766B4E;
+  color: #CBC4AE;
+}
+
+.ContentBox{
+  display: flex;
+  justify-self: center;
+  flex-direction: column;
+  background-color: #CBC4AE;
+  text-align: center;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+.Center{
+  display: flex;
+  justify-content: center;
+}
+
+.Column{
+  display: flex;
+  flex-direction: column;
+}
+
+.Row{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  background-color: #F1EFED;
+  border-radius: 7px;
+  width: 75%;
+}
+
+
+.Box{
+  display: flex;
+  flex-direction: column;
+  margin: 2%;
+}
+
+.Box2{
+  margin: 2%;
+}
+
+.Box3{
+  display: flex;
+  flex-direction: center;
+  margin: 2%;
+}
+
+.ImgSize{
+  width: 600px;
+
+}
+
+.spacer{
+  margin: 20px;
+}
+
+.FontSize{
+  font-size: 50px;
+  font-family: HeaderFont;
+}
+
+.FontSize2{
+  font-size: 30px;
+  font-family: Font;
+}
+
+.HeaderFont{
+  font-family: HeaderFont;
+}
+
+.Font{
+  font-family: Font;
+}
