@@ -13,24 +13,24 @@ app.use(express.json());
 app.use(express.urlencoded());
 
 app.get("/", (req, res) => {
-    res.json({Message: "Welcome to Gay Stuff API: Check out our other routes!"})
+    res.json({Message: "Welcome to Whendigo Occurances!"})
 });
 
 app.get("/post", async (req, res) => {
-    let gayItem = await dal.getGayItem();
-    res.json(gayItem);
+    let post = await dal.getPost();
+    res.json(post);
 });
 
 app.get("/post/:id", async (req, res) => {
     let id = req.params.id;
-    let gayItem = await dal.getGayItemById(id);
-    res.json(gayItem);
+    let post = await dal.getPostById(id);
+    res.json(post);
 });
 
 app.put('/post/update/:id', async (req, res) => {
-    const gayItem = req.body;
+    const post = req.body;
     const id = req.params.id;
-    const updated = await dal.update(id, gayItem)
+    const updated = await dal.update(id, post)
     res.json(updated);
   });
 
@@ -45,8 +45,8 @@ app.get("/post/delete/:id", async (req, res) => {
 });
 
 app.post("/post/create", async (req,res) => {
-let gayItem = await dal.create(req.body.postDate, req.body.postBody, req.body.postImg)
-return res.json({message: "Joke created successfully"});
+let post = await dal.create(req.body.postDate, req.body.postBody, req.body.postImg)
+return res.json({message: "Post created successfully"});
 
 });
 
