@@ -38,7 +38,7 @@ function App() {
                         <div className="Column">
                               <div className="Row">
                             <div className='Box'>
-                                <img className="ImgSize" src={process.env.PUBLIC_URL + '/town.jpg'}></img>
+                                <img className="ImgSize" src={process.env.PUBLIC_URL + '/WhendigoSign.png'}></img>
                               </div>
                               <div className="Box2">
                                 <h3 className="FontSize">Whendigo, Missouri</h3>
