@@ -1,8 +1,8 @@
 const { mongoose, Schema } = require("mongoose");
 const { v4: uuidv4 } = require("uuid");
-const connectionStringz = "";
-const collectionOne = ""
-const collectionTwo = ""
+const connectionStringz = "mongodb://localhost:27017/";
+const collectionOne = "Posts"
+const collectionTwo = "Users"
 
 mongoose.connect(connectionStringz, {useUnifiedTopology: true, useNewUrlParser: true});
 
