@@ -21,35 +21,40 @@ const Profile = () => {
                     Create
                 </NavLink>
           </div>
-                <div className='Center'>
-                  <div>
-                    <img className='ImgSize2' src={process.env.PUBLIC_URL + '/ProfileOne.jpg'}></img>
-                  </div>
-                  <div>
-                    <div className='Row2'>
-                      <h4 className='Padding'>
-                        Quillians Renae
-                      </h4>
-                      <p className='Padding'>
-                      Posts: 
-                      </p>
-                      <p className='Padding'>
-                      Followers:
-                      </p>
-                      <p className='Padding'>
-                      Following:
-                      </p>
+            <div className='Row3'>
+              <div className='Center'>
+                    <div>
+                      <img className='ImgSize2' src={process.env.PUBLIC_URL + '/ProfileOne.jpg'}></img>
                     </div>
-                    <div className='Profile'>
-                      <p>
-                      Location: Whendigo, Missouri
-                      </p>
-                      <p>
-                      Bio: The one and only creator of the blog and website.  Fulltime Nightshift worker and college student. Working on my Web development degree. Cat lover and loves to go searching for things that go bump in the night.
-                      </p>
+                    <div>
+                      <div className='Row2'>
+                        <h4 className='Padding'>
+                          Quillians Renae
+                        </h4>
+                        <p className='Padding'>
+                        Posts: 
+                        </p>
+                        <p className='Padding'>
+                        Followers:
+                        </p>
+                        <p className='Padding'>
+                        Following:
+                        </p>
+                      </div>
+                      <div className='Profile'>
+                        <p className='Padding2'>
+                        Location: Whendigo, Missouri
+                        </p>
+                        <p className='Padding2'>
+                        Bio:
+                        </p>
+                        <p className='Padding2'>
+                        The one and only creator of the blog and website.  Fulltime Nightshift worker and college student. Working on my Web development degree. Loves to go searching for things that go bump in the night.
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
+            </div>
         </div> 
     </div>
   )
