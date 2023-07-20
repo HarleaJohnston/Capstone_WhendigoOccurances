@@ -6,8 +6,8 @@ const Profile = () => {
   return (
     <div className='Column'>
         <div>
+          <Nav/>
           <div className='Center'>
-            <Nav/>
                 <NavLink to='/update'
                   className={({isActive, isPending}) => isPending ? "Pending" : isActive ? "Active" : ""}>
                     Update
@@ -21,31 +21,31 @@ const Profile = () => {
                     Create
                 </NavLink>
           </div>
-                <div>
+                <div className='Center'>
                   <div>
-                    <img></img>
+                    <img className='ImgSize2' src={process.env.PUBLIC_URL + '/ProfileOne.jpg'}></img>
                   </div>
                   <div>
-                    <div className='Row'>
-                      <h4>
+                    <div className='Row2'>
+                      <h4 className='Padding'>
                         Quillians Renae
                       </h4>
-                      <p>
-                      Posts:
+                      <p className='Padding'>
+                      Posts: 
                       </p>
-                      <p>
+                      <p className='Padding'>
                       Followers:
                       </p>
-                      <p>
+                      <p className='Padding'>
                       Following:
                       </p>
                     </div>
-                    <div className=''>
+                    <div className='Profile'>
                       <p>
-                      Location:
+                      Location: Whendigo, Missouri
                       </p>
                       <p>
-                      Bio:
+                      Bio: The one and only creator of the blog and website.  Fulltime Nightshift worker and college student. Working on my Web development degree. Cat lover and loves to go searching for things that go bump in the night.
                       </p>
                     </div>
                   </div>

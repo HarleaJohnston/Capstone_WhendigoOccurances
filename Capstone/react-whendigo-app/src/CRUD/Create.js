@@ -2,21 +2,20 @@ import React from 'react'
 import { useState } from 'react';
 
 const Create = () => {
-    const [postDate, setPostDate] = useState('');
-    const [postBody, setPostBody] = useState('');
-    const [postImg, setImg] = useState('');
-    const [type, setType] = useState('');
+    const [date, setDate] = useState('');
+    const [body, setBody] = useState('');
+    const [img, setImg] = useState('');
   
     const handleSubmit = (e) => {
       e.preventDefault();
   
       const create = {
-        postDate: postDate,
-        postBody: postBody,
-        postImg: postImg
+        postDate: date,
+        postBody: body,
+        postImg: img
       };
   
-      fetch('http://localhost:666/post/create', {
+      fetch('http://localhost:3001/gayItem/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -27,10 +26,9 @@ const Create = () => {
         .then(data => {
           console.log(data);
           // Clear the form fields
-          setPostDate('');
-          setPostBody('');
+          setDate('');
+          setBody('');
           setImg('');
-          setType('');
         })
         .catch(error => {
           console.error(error);
@@ -39,31 +37,31 @@ const Create = () => {
   
     return (
       <div>
-        <h2>Create Gay Item</h2>
+        <h2>Post:</h2>
         <form onSubmit={handleSubmit}>
           <label>
-            Post Date:
+            Date:
             <input
               type="text"
-              value={postDate}
-              onChange={(e) => setPostDate(e.target.value)}
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
             />
           </label>
           <br />
           <label>
-            Body:
+            Post Body:
             <input
               type="text"
-              value={postBody}
-              onChange={(e) => setPostBody(e.target.value)}
+              value={body}
+              onChange={(e) => setBody(e.target.value)}
             />
           </label>
           <br />
           <label>
-            Image(Optional):
+            Img:
             <input
               type="text"
-              value={postImg}
+              value={img}
               onChange={(e) => setImg(e.target.value)}
             />
           </label>

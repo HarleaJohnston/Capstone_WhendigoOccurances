@@ -52,6 +52,16 @@ body{
   width: 75%;
 }
 
+.Row2{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  background-color: #CBAF3D;
+  border-radius: 15px;
+  padding: 2px 30px;
+  width: 60%;
+}
+
 
 .Box{
   display: flex;
@@ -71,6 +81,12 @@ body{
 
 .ImgSize{
   width: 600px;
+
+}
+
+.ImgSize2{
+  width: 60%;
+  border-radius: 180px;
 
 }
 
@@ -97,7 +113,10 @@ body{
 }
 
 .Profile{
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
+background-color: #FDF8E8;
+width: 60%;
+}
+
+.Padding{
+  padding: 10px;
 }
