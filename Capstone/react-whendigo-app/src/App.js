@@ -23,6 +23,7 @@ function App() {
                   <li><a href="#" class="nav-link px-2 link-secondary">Home</a></li>
                   <li><a href="/posts" class="nav-link px-2 link-secondary">Post Feed</a></li>
                   <li><a href="/collections" class="nav-link px-2 link-secondary">Collections</a></li>
+                  <li><a href="/profile" class="nav-link px-2 link-secondary">Profile</a></li>
                 </ul>
 
                 <div class="col-md-3 text-end">

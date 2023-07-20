@@ -95,3 +95,9 @@ body{
 .Font{
   font-family: Font;
 }
+
+.Profile{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}

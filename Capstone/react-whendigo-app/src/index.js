@@ -7,6 +7,9 @@ import reportWebVitals from './reportWebVitals';
 import Profile from './Pages/Profile'
 import Posts from './Pages/Posts'
 import Collections from './Pages/Collections';
+import Create from './CRUD/Create'
+import Update from './CRUD/Update'
+import Delete from './CRUD/Delete'
 
 const router = createBrowserRouter([
   {
@@ -28,6 +31,18 @@ const router = createBrowserRouter([
   {
     path: '/collections',
     element: <Collections/>,
+  },
+  {
+    path: '/create',
+    element: <Create/>,
+  },
+  {
+    path: '/update',
+    element: <Update/>,
+  },
+  {
+    path: '/delete',
+    element: <Delete/>,
   }
 ]);
 
