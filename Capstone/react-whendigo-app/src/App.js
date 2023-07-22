@@ -34,7 +34,9 @@ function App() {
             </div>      
           </div>
             <div className="ContentBox">
+            <div className="spacer"></div>
               <h1 className="HeaderFont">"Whendigo isn't a place where people live but settle. It's a place where specters, creatures, and the unknown rule. I wouldn't even say it's a town at all but a living being waiting to swallow us whole. - Francis Greeves Whendigo</h1>
+              <div className="spacer"></div>
                   <div className="Center">
                         <div className='Center'>
                             <div className="Column">
@@ -50,9 +52,7 @@ function App() {
                                     </p>
                                   </div>
                               </div>
-
                               <div className="spacer"></div>
-
                               <div className="Row">
                                   <div className="Box2">
                                     <h3 className="FontSize">Tourist Trap Whendigo</h3>
@@ -64,8 +64,8 @@ function App() {
                                   <div className='Box3'>
                                     <img className="ImgSize" src={process.env.PUBLIC_URL + '/town.jpg'}></img>
                                 </div>
-
                               </div>
+                              <div className="spacer"></div>
                             </div>
 
                         </div>

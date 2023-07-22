@@ -20,7 +20,7 @@ body{
 }
 
 .navColor{
-  background-color: #D1A91A;
+  background-color: #766B4E;
   color: #CBC4AE;
 }
 
@@ -28,10 +28,22 @@ body{
   display: flex;
   justify-self: center;
   flex-direction: column;
-  background-color: #FFE4BB;
+  background-color: #E5E1CF;
+  align-items: center;
   text-align: center;
   margin-left: 10%;
   margin-right: 10%;
+}
+
+.ContentBox2{
+  display: flex;
+  justify-self: center;
+  flex-direction: column;
+  background-color: #E5E1CF;
+  text-align: center;
+  margin-left: 10%;
+  margin-right: 10%;
+  border-radius: 15px;
 }
 
 .Center{
@@ -51,6 +63,7 @@ body{
   background-color: #F1EFED;
   border-radius: 7px;
   width: 75%;
+  margin: 0 auto; 
 }
 
 .Row2{
@@ -125,6 +138,7 @@ body{
 .Profile{
 background-color: #FDF8E8;
 width: 70%;
+justify-content: left;
 }
 
 .Padding{
