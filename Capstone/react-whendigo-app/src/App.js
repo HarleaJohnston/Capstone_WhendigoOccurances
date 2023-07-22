@@ -11,7 +11,7 @@ function App() {
             <div> 
               <img className='bannerSize' src={process.env.PUBLIC_URL + '/Banner 1.png'}/>
             </div>
-            <div class="container">
+            <div class="navColor">
               <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
                 <div class="col-md-3 mb-2 mb-md-0">
                   <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">

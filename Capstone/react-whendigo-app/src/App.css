@@ -20,7 +20,7 @@ body{
 }
 
 .navColor{
-  background-color: #766B4E;
+  background-color: #D1A91A;
   color: #CBC4AE;
 }
 
@@ -28,7 +28,7 @@ body{
   display: flex;
   justify-self: center;
   flex-direction: column;
-  background-color: #CBC4AE;
+  background-color: #FFE4BB;
   text-align: center;
   margin-left: 10%;
   margin-right: 10%;
