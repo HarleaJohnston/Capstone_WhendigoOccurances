@@ -15,7 +15,7 @@ const Create = () => {
         postImg: img
       };
   
-      fetch('http://localhost:3001/gayItem/create', {
+      fetch('http://localhost:6666/post/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -25,7 +25,6 @@ const Create = () => {
         .then(response => response.json())
         .then(data => {
           console.log(data);
-          // Clear the form fields
           setDate('');
           setBody('');
           setImg('');

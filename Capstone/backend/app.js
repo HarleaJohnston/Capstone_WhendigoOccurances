@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require('uuid');
 
 const dal = require ("./webDal").DAL;
 
-const port = 666;
+const port = 6666;
 
 const app = express();
 
@@ -38,7 +38,7 @@ app.get("/post/delete/:id", async (req, res) => {
     const id = req.params.id;
   try {
     await dal.delete(id);
-    res.json({Message: "item was deleted"});
+    res.json({Message: "Post was deleted"});
   } catch (err) {
     res.json({Message: "Didn't delete"});
   }

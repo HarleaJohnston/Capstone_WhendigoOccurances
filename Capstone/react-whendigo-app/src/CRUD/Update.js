@@ -14,7 +14,7 @@ function Update() {
 
   const handleUpdate = (e) => {
     e.preventDefault();
-    fetch(`http://localhost:666/post/update/${itemId}`, {
+    fetch(`http://localhost:6666/post/update/${itemId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
