@@ -9,7 +9,7 @@
 }
 
 body{
-  background-image: url("./imgs/backgroundss.png");
+  background-image: url("./imgs/BackgroundImg.png");
   background-position: cover;
   }
 
@@ -147,4 +147,18 @@ justify-content: left;
 
 .Padding2{
 padding: 2px 5px;
+}
+
+.right{
+  display: flex;
+  justify-content: left !important;
+}
+
+.PostBox{
+  display: flex;
+  background-color: #F1EFED;
+  border-radius: 7px;
+  width: 75%;
+  margin: 0 auto; 
+  padding: 5px;
 }

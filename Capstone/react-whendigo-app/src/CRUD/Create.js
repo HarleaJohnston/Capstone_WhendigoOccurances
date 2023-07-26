@@ -15,7 +15,7 @@ const Create = () => {
         postImg: img
       };
   
-      fetch('http://localhost:6666/post/create', {
+      fetch('http://localhost:3666/post/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

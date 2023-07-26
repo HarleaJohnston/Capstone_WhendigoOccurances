@@ -10,7 +10,7 @@ const Delete = () => {
   
     const handleDelete = (e) => {
       e.preventDefault();
-      fetch(`http://localhost:6666/post/delete/${itemId}`, {
+      fetch(`http://localhost:3666/post/delete/${itemId}`, {
         method: 'GET',
       })
         .then((response) => {

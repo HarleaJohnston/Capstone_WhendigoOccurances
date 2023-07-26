@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require('uuid');
 
 const dal = require ("./webDal").DAL;
 
-const port = 6666;
+const port = 3666;
 
 const app = express();
 

@@ -7,7 +7,7 @@ const Posts = () => {
   const [items, setPosts] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:666/post')
+    fetch('http://localhost:3666/post')
       .then(response => {
         if (!response.ok) {
           throw new Error('Failed to fetch posts');
@@ -28,15 +28,19 @@ const Posts = () => {
             <Nav/>
         </div>
 
-            <div className="box">
-          <h2>Post Feed:</h2>
-          {items.map(item => (
-            <div key={item.id}>
-              <p>{item.postDate}</p>
-              <p>{item.postBody}</p>
-              <p>{item.postImg}</p>
-            </div>
-          ))}
+        <div className="ContentBox">
+        <h2 className="right">Post Feed:</h2>
+        <div className="spacer"></div>
+          <div className="PostBox">
+            {items.map(item => (
+              <div key={item.id}>
+                <h3>{item.postDate}</h3>
+                <p>{item.postImg}</p>
+                <p>{item.postBody}</p>
+              </div>
+            ))}
+          </div>
+          <div className="spacer"></div>
         </div>
 
     </div>
