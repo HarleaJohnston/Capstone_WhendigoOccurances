@@ -35,7 +35,7 @@ const Create = () => {
     };
   
     return (
-      <div>
+      <div className='Row'>
         <h2>Post:</h2>
         <form onSubmit={handleSubmit}>
           <label>

@@ -12,6 +12,8 @@ import Update from './CRUD/Update'
 import Delete from './CRUD/Delete'
 import Login from './Pages/Login';
 import Signup from './Pages/Signup'
+import Error from './Pages/Error';
+import Error2 from './Pages/Error2';
 
 const router = createBrowserRouter([
   {
@@ -53,6 +55,15 @@ const router = createBrowserRouter([
   {
     path: '/signup',
     element: <Signup/>,
+  }
+  ,
+  {
+    path: '/error',
+    element: <Error/>,
+  },
+  {
+    path: '/error2',
+    element: <Error2/>,
   }
 ]);
 

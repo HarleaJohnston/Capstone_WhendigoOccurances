@@ -38,7 +38,7 @@ function Update() {
   };
 
   return (
-    <div>
+    <div className='Row'>
       <h2>Update Item</h2>
       <form onSubmit={handleUpdate}>
         <label>
