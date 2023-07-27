@@ -44,7 +44,9 @@ exports.DAL = {
         let Posts = {
             postDate: postDate,
             postBody: postBody,
-            postImg: postImg
+            postImg: postImg,
+            dislikes: 0, 
+            likes: 0
         }
         postModel.collection.insertOne(Posts);
     },
