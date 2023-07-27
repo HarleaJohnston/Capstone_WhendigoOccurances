@@ -27,8 +27,12 @@ function App() {
                 </ul>
 
                 <div class="col-md-3 text-end">
-                  <button type="button" class="btn btn-outline-primary me-2">Login</button>
-                  <button type="button" class="btn btn-primary">Sign-up</button>
+                  <ul class="nav col-12">
+                    <li><a href="/login" class="nav-link px-2 link-secondary">Login</a></li>
+                    <li><a href="/signup" class="nav-link px-2 link-secondary">Signup</a></li>
+                  </ul>
+                  {/* <button href="/login" class="btn btn-primary">Login</button>
+                  <button href="/signup" class="btn btn-primary">Sign-up</button> */}
                 </div>
               </header>
             </div>      

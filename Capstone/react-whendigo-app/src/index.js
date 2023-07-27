@@ -10,6 +10,8 @@ import Collections from './Pages/Collections';
 import Create from './CRUD/Create'
 import Update from './CRUD/Update'
 import Delete from './CRUD/Delete'
+import Login from './Pages/Login';
+import Signup from './Pages/Signup'
 
 const router = createBrowserRouter([
   {
@@ -43,6 +45,14 @@ const router = createBrowserRouter([
   {
     path: '/delete',
     element: <Delete/>,
+  },
+  {
+    path: '/login',
+    element: <Login/>,
+  },
+  {
+    path: '/signup',
+    element: <Signup/>,
   }
 ]);
 

@@ -50,6 +50,31 @@ return res.json({message: "Post created successfully"});
 
 });
 
+app.post("/post/:id/like", async (req, res) => {
+  const postId = req.params.id;
+
+  try {
+    const post = await dal.likePost(postId);
+    res.json({ success: true, post });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: "Failed to like post" });
+  }
+});
+
+app.post("/post/:id/dislike", async (req, res) => {
+  const postId = req.params.id;
+
+  try {
+    const post = await dal.dislikePost(postId);
+    res.json({ success: true, post });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: "Failed to dislike post" });
+  }
+});
+
+
 app.post("/createKey", async (req, res) => {
   const email = req.body.email;
 

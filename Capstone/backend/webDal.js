@@ -15,7 +15,9 @@ const posts = new Schema(
     {
         postDate: String,
         postBody: String,
-        postImg: String
+        postImg: String,
+        likes: { type: Number, default: 0 }, 
+        dislikes: { type: Number, default: 0 }
     },
     { collection: collectionOne}
 );
@@ -65,6 +67,39 @@ exports.DAL = {
     getPostById: async (id) => {
         return await postModel.findById(id).exec();
     },
+    likePost: async (postId) => {
+        try {
+          const post = await postModel.findById(postId).exec();
+          if (!post) {
+            throw new Error("Post not found");
+          }
+
+          post.likes += 1;
+          await post.save();
+    
+          return post;
+        } catch (error) {
+          console.error(error);
+          throw error;
+        }
+      },
+    
+      dislikePost: async (postId) => {
+        try {
+          const post = await postModel.findById(postId).exec();
+          if (!post) {
+            throw new Error("Post not found");
+          }
+
+          post.dislikes += 1;
+          await post.save();
+    
+          return post;
+        } catch (error) {
+          console.error(error);
+          throw error;
+        }
+      },
     //User Dal Stuff
     getUserByEmail: async (email) => {
         return await UserModel.findOne({ Gmail: email }).exec();
