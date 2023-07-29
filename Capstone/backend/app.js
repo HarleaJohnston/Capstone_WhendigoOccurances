@@ -1,16 +1,24 @@
 const express = require("express");
+const session = require("express-session"); 
 const cors = require("cors");
 const { v4: uuidv4 } = require('uuid');
 
 const dal = require ("./webDal").DAL;
 
-const port = 3666;
+const port = 6511;
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded());
+
+
+app.use(session({
+  secret: "this_is_a_very_secret_key",
+  resave: false,
+  saveUninitialized: true,
+}));
 
 app.get("/", (req, res) => {
     res.json({Message: "Welcome to Whendigo Occurances!"})
@@ -74,6 +82,23 @@ app.post("/post/:id/dislike", async (req, res) => {
   }
 });
 
+app.post("/createUser", async (req, res) => {
+  const { email, username, password } = req.body;
+
+  try {
+    const key = DAL.generateKey();
+    const result = await DAL.createUser(email, key, username, password);
+    if (result) {
+      res.json({ success: true, key: key });
+    } else {
+      res.json({ success: false, Message: "Failed to create user" });
+    }
+  } catch (error) {
+    console.error("Error creating user:", error);
+    res.status(500).json({ success: false, Message: "An error occurred while creating the user" });
+  }
+});
+
 
 app.post("/createKey", async (req, res) => {
   const email = req.body.email;
@@ -99,22 +124,50 @@ app.post("/createKey", async (req, res) => {
   }
 });
 
-app.post("/userExists", async (req, res) => {
-  const { email, key } = req.body;
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
 
   try {
-    const user = await dal.getUserByEmail(email);
-
-    if (user && user.Key === key) {
-      res.json({ success: true });
-    } else {
-      res.json({ success: false });
+    const user = await DAL.getUserByEmail(email);
+    if (!user) {
+      return res.json({ success: false, Message: "User not found" });
     }
+
+    const isValidPassword = await DAL.comparePasswords(password, user.Password);
+
+    if (!isValidPassword) {
+      return res.json({ success: false, Message: "Invalid password" });
+    }
+
+    const key = DAL.generateKey();
+    sessionStorage.setItem('sessionKey', key);
+    res.json({ success: true, key: key });
   } catch (error) {
-    console.error('Error checking credentials:', error);
-    res.json({ success: false });
+    console.error("Error during login:", error);
+    res.status(500).json({ success: false, Message: "An error occurred during login" });
   }
 });
+
+app.listen(port, () => {
+  console.log(`Server is listening on port: ${port}`);
+});
+
+// app.post("/userExists", async (req, res) => {
+//   const { email, key } = req.body;
+
+//   try {
+//     const user = await dal.getUserByEmail(email);
+
+//     if (user && user.Key === key) {
+//       res.json({ success: true });
+//     } else {
+//       res.json({ success: false });
+//     }
+//   } catch (error) {
+//     console.error('Error checking credentials:', error);
+//     res.json({ success: false });
+//   }
+// });
 
 app.listen(port, () => {
   console.log(`Server is listening on port: ${port}`);

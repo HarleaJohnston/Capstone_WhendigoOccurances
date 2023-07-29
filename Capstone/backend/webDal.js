@@ -1,4 +1,5 @@
 const { mongoose, Schema } = require("mongoose");
+const bcrypt = require("bcrypt");
 const { v4: uuidv4 } = require("uuid");
 const connectionStringz = "mongodb://127.0.0.1:27017/Whendigo_Occurances_DB";
 const collectionOne = "Posts"
@@ -102,6 +103,8 @@ exports.DAL = {
           throw error;
         }
       },
+
+
     //User Dal Stuff
     getUserByEmail: async (email) => {
         return await UserModel.findOne({ Gmail: email }).exec();
@@ -114,8 +117,9 @@ exports.DAL = {
           Key: key,
           Gmail: email,
           Username: username,
-          Password: password
+          Password: await bcrypt.hash(password, 10),
         };
+    
         let result;
         try {
           result = await UserModel.collection.insertOne(newUser);
@@ -130,6 +134,9 @@ exports.DAL = {
         let result = key === "ndkl-dkfd-ekrg-ewld";
         console.log("isKeyValid result");
         return result;
-      }
+      },
+       comparePasswords: async (inputPassword, hashedPassword) => {
+        return await bcrypt.compare(inputPassword, hashedPassword);
+      },
 
 };
