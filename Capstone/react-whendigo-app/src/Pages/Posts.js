@@ -22,12 +22,14 @@ const Posts = () => {
 
   const handleLikeDislike = (postId, likeStatus) => {
     const newStatus = likeStatus === "liked" ? null : "liked";
-    fetch(`http://localhost:3666/post/${postId}/like`, {
+    const userId = "user123"; 
+
+    fetch(`http://localhost:3666/post/${postId}/${likeStatus}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ likeStatus: newStatus }),
+      body: JSON.stringify({ userId }),
     })
     .then(response => response.json())
     .then(data => {
@@ -53,12 +55,12 @@ const Posts = () => {
               <h3>{item.postDate}</h3>
               <p>{item.postImg}</p>
               <p>{item.postBody}</p>
-              <p>Likes: {item.likes}</p>
-              <p>Dislikes: {item.dislikes}</p>
-              <button onClick={() => handleLikeDislike(item.id, item.likeStatus)} disabled={item.likeStatus === "disliked"}>
+              <p>Likes: {item.likes.length}</p>
+              <p>Dislikes: {item.dislikes.length}</p>
+              <button onClick={() => handleLikeDislike(item.id, item.likeStatus)} disabled={item.likeStatus === "disliked" || item.likes.includes("user123")}>
                 {item.likeStatus === "liked" ? "Unlike" : "Like"}
               </button>
-              <button onClick={() => handleLikeDislike(item.id, item.likeStatus)} disabled={item.likeStatus === "liked"}>
+              <button onClick={() => handleLikeDislike(item.id, item.likeStatus)} disabled={item.likeStatus === "liked" || item.dislikes.includes("user123")}>
                 {item.likeStatus === "disliked" ? "Undislike" : "Dislike"}
               </button>
             </div>

@@ -46,8 +46,8 @@ exports.DAL = {
             postDate: postDate,
             postBody: postBody,
             postImg: postImg,
-            dislikes: 0, 
-            likes: 0
+            dislikes: [], 
+            likes: []
         }
         postModel.collection.insertOne(Posts);
     },
@@ -70,39 +70,48 @@ exports.DAL = {
     getPostById: async (id) => {
         return await postModel.findById(id).exec();
     },
-    likePost: async (postId) => {
-        try {
-          const post = await postModel.findById(postId).exec();
-          if (!post) {
-            throw new Error("Post not found");
-          }
-
-          post.likes += 1;
-          await post.save();
-    
-          return post;
-        } catch (error) {
-          console.error(error);
-          throw error;
+    likePost: async (postId, userId) => {
+      try {
+        const post = await postModel.findById(postId).exec();
+        if (!post) {
+          throw new Error("Post not found");
         }
-      },
-    
-      dislikePost: async (postId) => {
-        try {
-          const post = await postModel.findById(postId).exec();
-          if (!post) {
-            throw new Error("Post not found");
-          }
-
-          post.dislikes += 1;
-          await post.save();
-    
-          return post;
-        } catch (error) {
-          console.error(error);
-          throw error;
+  
+        if (post.likes.includes(userId)) {
+          post.likes = post.likes.filter(id => id !== userId);
+        } else {
+          post.likes.push(userId);
+          post.dislikes = post.dislikes.filter(id => id !== userId);
         }
-      },
+  
+        await post.save();
+        return post;
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
+    },
+  
+    dislikePost: async (postId, userId) => {
+      try {
+        const post = await postModel.findById(postId).exec();
+        if (!post) {
+          throw new Error("Post not found");
+        }
+  
+        if (post.dislikes.includes(userId)) {
+          post.dislikes = post.dislikes.filter(id => id !== userId);
+        } else {
+          post.dislikes.push(userId);
+          post.likes = post.likes.filter(id => id !== userId);
+        }
+        await post.save();
+        return post;
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
+    },
 
 
     //User Dal Stuff
