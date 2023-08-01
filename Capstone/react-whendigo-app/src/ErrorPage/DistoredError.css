@@ -1,0 +1,16 @@
+body{
+    background-image: url("../imgs/ErrorPage2.png") ;
+    background-repeat: no-repeat;
+    background-color: black;
+    background-size: cover;
+}
+
+.TV{
+    display: flex;
+    justify-content: center;
+    margin-top: 150px;
+}
+
+.TVsize{
+    width: 800px;
+}

@@ -12,8 +12,8 @@ import Update from './CRUD/Update'
 import Delete from './CRUD/Delete'
 import Login from './Pages/Login';
 import Signup from './Pages/Signup'
-import Error from './Pages/Error';
-import Error2 from './Pages/Error2';
+import Error from './ErrorPages/Error';
+import Error2 from './ErrorPage/Error2';
 
 const router = createBrowserRouter([
   {
