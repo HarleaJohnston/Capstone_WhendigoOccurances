@@ -17,8 +17,8 @@ const posts = new Schema(
         postDate: String,
         postBody: String,
         postImg: String,
-        likes: { type: Number, default: 0 }, 
-        dislikes: { type: Number, default: 0 }
+        likes: Array, 
+        dislikes: Array
     },
     { collection: collectionOne}
 );
@@ -31,8 +31,9 @@ const user = new Schema(
         Gmail: String,
         UserName: String,
         Password: String,
-        BookMarked: [String],
-        NoteBook: String
+        BookMarked: Array,
+        NoteBook: String,
+        Friends: Array
     },
     { collection: collectionTwo}
 );
@@ -128,15 +129,34 @@ exports.DAL = {
           Username: username,
           Password: await bcrypt.hash(password, 10),
         };
-    
-        let result;
+      
         try {
-          result = await UserModel.collection.insertOne(newUser);
+          const result = await UserModel.create(newUser); 
+          return result; 
         } catch (error) {
           console.log("Error creating user:", error);
           throw error;
         }
-        return result;
+      },
+      bookmarkPost: async (postId, userId, bookmarked) => {
+        try {
+          const post = await postModel.findById(postId).exec();
+          if (!post) {
+            throw new Error("Post not found");
+          }
+      
+          if (bookmarked) {
+            post.bookmarked = [...post.bookmarked, userId];
+          } else {
+            post.bookmarked = post.bookmarked.filter((id) => id !== userId);
+          }
+      
+          await post.save();
+          return post;
+        } catch (error) {
+          console.error(error);
+          throw error;
+        }
       },
       isKeyValid: (key) => {
         console.log("isKeyValid" + key);

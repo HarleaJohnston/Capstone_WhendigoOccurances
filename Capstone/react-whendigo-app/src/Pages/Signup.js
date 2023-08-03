@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 const Signup = () => {
-
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const history = useHistory();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await fetch('/createUser', {
+      const response = await fetch('http://localhost:3666/createUser', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -25,8 +26,11 @@ const Signup = () => {
       const data = await response.json();
 
       if (data.success && data.key) {
+        // Save the key in the session storage or local storage for later use
         sessionStorage.setItem('sessionKey', data.key);
-        window.location.href = '/';
+
+        // Navigate to the home page after successful signup
+        history.push('/'); // Navigate to the home page without page reload
       } else {
         console.log('Signup failed:', data.Message);
       }
@@ -56,6 +60,5 @@ const Signup = () => {
     </div>
   );
 };
-
 
 export default Signup;

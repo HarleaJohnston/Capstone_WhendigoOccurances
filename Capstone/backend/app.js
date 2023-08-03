@@ -82,12 +82,27 @@ app.post("/post/:id/dislike", async (req, res) => {
   }
 });
 
+app.post("/post/:id/bookmark", async (req, res) => {
+  const postId = req.params.id;
+  const userId = req.body.userId;
+  const bookmarked = req.body.bookmarked;
+
+  try {
+    const post = await dal.bookmarkPost(postId, userId, bookmarked);
+    res.json({ success: true, bookmarked: post.bookmarked });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: "Failed to bookmark post" });
+  }
+});
+
 app.post("/createUser", async (req, res) => {
   const { email, username, password } = req.body;
 
   try {
-    const key = DAL.generateKey();
-    const result = await DAL.createUser(email, key, username, password);
+    const key = dal.generateKey(); 
+    const result = await dal.createUser(email, key, username, password); 
+    
     if (result) {
       res.json({ success: true, key: key });
     } else {
@@ -128,28 +143,24 @@ app.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await DAL.getUserByEmail(email);
+    const user = await dal.getUserByEmail(email);
     if (!user) {
       return res.json({ success: false, Message: "User not found" });
     }
 
-    const isValidPassword = await DAL.comparePasswords(password, user.Password);
+    const isValidPassword = await dal.comparePasswords(password, user.Password);
 
     if (!isValidPassword) {
       return res.json({ success: false, Message: "Invalid password" });
     }
 
-    const key = DAL.generateKey();
-    sessionStorage.setItem('sessionKey', key);
-    res.json({ success: true, key: key });
+    const key = dal.generateKey();
+    req.session.userId = user._id; // Store the user ID in the session
+    res.json({ success: true, key: key, userId: user._id });
   } catch (error) {
     console.error("Error during login:", error);
     res.status(500).json({ success: false, Message: "An error occurred during login" });
   }
-});
-
-app.listen(port, () => {
-  console.log(`Server is listening on port: ${port}`);
 });
 
 // app.post("/userExists", async (req, res) => {

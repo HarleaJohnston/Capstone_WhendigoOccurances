@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 const Login = () => {
   const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const history = useHistory();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await fetch('/login', { 
+      const response = await fetch('http://localhost:3666/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -23,9 +24,9 @@ const Login = () => {
       const data = await response.json();
 
       if (data.success) {
- 
         sessionStorage.setItem('sessionKey', data.key);
-        window.location.href = '/';
+        sessionStorage.setItem('userId', data.userId);
+        history.push('/');
       } else {
         console.log('Login failed:', data.Message);
       }
@@ -41,10 +42,6 @@ const Login = () => {
         <div>
           <label>Email:</label>
           <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        </div>
-        <div>
-          <label>Username:</label>
-          <input type="username" value={username} onChange={(e) => setUsername(e.target.value)} />
         </div>
         <div>
           <label>Password:</label>
