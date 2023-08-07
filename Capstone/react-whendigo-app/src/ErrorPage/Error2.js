@@ -1,6 +1,10 @@
-import React from 'react';
+import {React, useEffect} from 'react';
 
 const Error2 = () => {
+
+  useEffect(() => {
+    require('./DistoredError.css');
+  })
 
   return (
         <div className='TV' >

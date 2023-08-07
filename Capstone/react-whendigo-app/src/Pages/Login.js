@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,7 +26,7 @@ const Login = () => {
       if (data.success) {
         sessionStorage.setItem('sessionKey', data.key);
         sessionStorage.setItem('userId', data.userId);
-        history.push('/');
+        navigate('/');
       } else {
         console.log('Login failed:', data.Message);
       }

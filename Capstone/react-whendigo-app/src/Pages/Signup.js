@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,11 +26,8 @@ const Signup = () => {
       const data = await response.json();
 
       if (data.success && data.key) {
-        // Save the key in the session storage or local storage for later use
         sessionStorage.setItem('sessionKey', data.key);
-
-        // Navigate to the home page after successful signup
-        history.push('/'); // Navigate to the home page without page reload
+        navigate('/');
       } else {
         console.log('Signup failed:', data.Message);
       }

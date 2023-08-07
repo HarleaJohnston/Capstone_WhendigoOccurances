@@ -1,9 +1,13 @@
-import React from 'react';
+import {React, useEffect} from 'react';
 
 const Error = () => {
 
+  useEffect(() => {
+    require('./Error.css');
+  })
+
   return (
-    <div className='Error'>
+    <div>
 
     </div>
   );
