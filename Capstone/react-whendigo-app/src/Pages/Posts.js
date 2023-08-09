@@ -51,6 +51,7 @@ const Posts = () => {
         if (data.success) {
           const updatedPosts = items.map(post => {
             if (post.id === postId) {
+              console.log(postId)
               return { ...post, likeStatus: newStatus };
             }
             return post;
@@ -140,7 +141,7 @@ const Posts = () => {
         <div className="spacer"></div>
         {items.map((item) => {
           const likeStatus = item.likes.includes(userId) ? "liked" : item.dislikes.includes(userId) ? "disliked" : null;
-
+          console.log(item.id)
           return (
             <div key={item.id} className="PostBox">
               <h3>{item.postDate}</h3>
@@ -155,12 +156,15 @@ const Posts = () => {
                     disabled={!userId}
                   >
                     {likeStatus === "liked" ? "Unlike" : "Like"}
+                    {console.log(item.id)}
                   </button>
                   <button
                     onClick={() => handleDislike(item.id, likeStatus)}
                     disabled={!userId}
                   >
-                    {likeStatus === "disliked" ? "Undislike" : "Dislike"}
+                    {likeStatus === "disliked" ? "Undislike" : "Dislike" }
+                    {console.log(item.id)}
+                   
                   </button>
                 </>
               )}
