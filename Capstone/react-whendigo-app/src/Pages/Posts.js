@@ -26,34 +26,82 @@ const Posts = () => {
       });
   }, []);
 
-  const handleLikeDislike = (postId, likeStatus) => {
+  const handleLike = (postId, likeStatus) => {
     if (!userId) {
-      alert("Please log in to like or dislike posts.");
+      alert("Please log in to like posts.");
       return;
     }
   
     let newStatus;
-  
     if (likeStatus === "liked") {
-      newStatus = "unlike"; 
+      newStatus = "unlike";
     } else {
-      newStatus = "like"; 
+      newStatus = "like";
     }
   
-    fetch(`http://localhost:3666/post/${postId}/${newStatus}`, {
+    fetch(`http://localhost:3666/post/${postId}/like`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ userId }),
     })
-    .then(response => response.json())
-    .then(data => {
-      setPosts(prevPosts => prevPosts.map(post => post.id === postId ? { ...post, likeStatus: data.post.likeStatus } : post));
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          const updatedPosts = items.map(post => {
+            if (post.id === postId) {
+              return { ...post, likeStatus: newStatus };
+            }
+            return post;
+          });
+          setPosts(updatedPosts);
+        } else {
+          console.error(data.error);
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
+  
+  const handleDislike = (postId, likeStatus) => {
+    if (!userId) {
+      alert("Please log in to dislike posts.");
+      return;
+    }
+  
+    let newStatus;
+    if (likeStatus === "disliked") {
+      newStatus = "undislike";
+    } else {
+      newStatus = "dislike";
+    }
+  
+    fetch(`http://localhost:3666/post/${postId}/dislike`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userId }),
     })
-    .catch(error => {
-      console.error(error);
-    });
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          const updatedPosts = items.map(post => {
+            if (post.id === postId) {
+              return { ...post, likeStatus: newStatus };
+            }
+            return post;
+          });
+          setPosts(updatedPosts);
+        } else {
+          console.error(data.error);
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
   };
 
   const handleBookmark = (postId) => {
@@ -87,38 +135,35 @@ const Posts = () => {
       </div>
 
       <div className="ContentBox">
+        <div className="spacer"></div>
         <h2 className="right">Post Feed:</h2>
         <div className="spacer"></div>
         {items.map((item) => {
           const likeStatus = item.likes.includes(userId) ? "liked" : item.dislikes.includes(userId) ? "disliked" : null;
 
-            return (
-              <div key={item.id} className="PostBox">
-                <h3>{item.postDate}</h3>
-                <p>{item.postImg}</p>
-                <p>{item.postBody}</p>
-                <p>Likes: {item.likes.length}</p>
-                <p>Dislikes: {item.dislikes.length}</p>
-                {userId && (
-                  <>
-                    <button
-                      onClick={() => handleLikeDislike(item.id, likeStatus)}
-                      disabled={
-                        likeStatus === "disliked" || likeStatus === "liked"
-                      }
-                    >
-                      {likeStatus === "liked" ? "Unlike" : "Like"}
-                    </button>
-                    <button
-                      onClick={() => handleLikeDislike(item.id, likeStatus)}
-                      disabled={
-                        likeStatus === "liked" || likeStatus === "disliked"
-                      }
-                    >
-                      {likeStatus === "disliked" ? "Undislike" : "Dislike"}
-                    </button>
-                  </>
-                )}
+          return (
+            <div key={item.id} className="PostBox">
+              <h3>{item.postDate}</h3>
+              <p>{item.postImg}</p>
+              <p>{item.postBody}</p>
+              <p>Likes: {item.likes.length}</p>
+              <p>Dislikes: {item.dislikes.length}</p>
+              {userId && (
+                <>
+                  <button
+                    onClick={() => handleLike(item.id, likeStatus)}
+                    disabled={!userId}
+                  >
+                    {likeStatus === "liked" ? "Unlike" : "Like"}
+                  </button>
+                  <button
+                    onClick={() => handleDislike(item.id, likeStatus)}
+                    disabled={!userId}
+                  >
+                    {likeStatus === "disliked" ? "Undislike" : "Dislike"}
+                  </button>
+                </>
+              )}
               {userId && (
                 <button
                   onClick={() => handleBookmark(item.id)}
@@ -127,11 +172,12 @@ const Posts = () => {
                   {item.bookmarked ? "Bookmarked" : "Bookmark"}
                 </button>
               )}
-              </div>
-            );
-          })}
-        </div>
+            </div>
+          );
+        })}
+        <div className="spacer"></div>
       </div>
+    </div>
   );
 };
 

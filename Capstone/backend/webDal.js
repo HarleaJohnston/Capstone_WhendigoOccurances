@@ -73,41 +73,24 @@ exports.DAL = {
     },
     likePost: async (postId, userId) => {
       try {
-        const post = await postModel.findById(postId).exec();
-        if (!post) {
-          throw new Error("Post not found");
-        }
-  
-        if (post.likes.includes(userId)) {
-          post.likes = post.likes.filter(id => id !== userId);
-        } else {
-          post.likes.push(userId);
-          post.dislikes = post.dislikes.filter(id => id !== userId);
-        }
-  
-        await post.save();
-        return post;
+        const updatedPost = await postModel.updateOne(
+          { _id: postId },
+          { $addToSet: { likes: userId }, $pull: { dislikes: userId } }
+        );
+        return updatedPost;
       } catch (error) {
         console.error(error);
         throw error;
       }
     },
-  
+    
     dislikePost: async (postId, userId) => {
       try {
-        const post = await postModel.findById(postId).exec();
-        if (!post) {
-          throw new Error("Post not found");
-        }
-  
-        if (post.dislikes.includes(userId)) {
-          post.dislikes = post.dislikes.filter(id => id !== userId);
-        } else {
-          post.dislikes.push(userId);
-          post.likes = post.likes.filter(id => id !== userId);
-        }
-        await post.save();
-        return post;
+        const updatedPost = await postModel.updateOne(
+          { _id: postId },
+          { $addToSet: { dislikes: userId }, $pull: { likes: userId } }
+        );
+        return updatedPost;
       } catch (error) {
         console.error(error);
         throw error;

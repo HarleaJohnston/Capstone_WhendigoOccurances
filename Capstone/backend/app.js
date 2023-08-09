@@ -60,9 +60,10 @@ return res.json({message: "Post created successfully"});
 
 app.post("/post/:id/like", async (req, res) => {
   const postId = req.params.id;
+  const userId = req.body.userId; 
 
   try {
-    const post = await dal.likePost(postId);
+    const post = await dal.likePost(postId, userId);
     res.json({ success: true, post });
   } catch (error) {
     console.error(error);
@@ -72,9 +73,10 @@ app.post("/post/:id/like", async (req, res) => {
 
 app.post("/post/:id/dislike", async (req, res) => {
   const postId = req.params.id;
+  const userId = req.body.userId; 
 
   try {
-    const post = await dal.dislikePost(postId);
+    const post = await dal.dislikePost(postId, userId);
     res.json({ success: true, post });
   } catch (error) {
     console.error(error);
