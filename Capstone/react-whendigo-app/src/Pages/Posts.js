@@ -4,6 +4,7 @@ import Nav from "./Nav";
 const Posts = () => {
   const [items, setPosts] = useState([]);
   const userId = sessionStorage.getItem('sessionKey');
+  const [comment, setComment] = useState("");
 
   useEffect(() => {
     fetch("http://localhost:3666/post")
@@ -129,6 +130,42 @@ const Posts = () => {
     });
   };
 
+  const handleComment = async (postId) => {
+    if (!userId) {
+      alert("Please log in to comment.");
+      return;
+    }
+  
+    try {
+      const response = await fetch(`http://localhost:3666/post/${postId}/comment`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId, comment }),
+      });
+      
+      const data = await response.json();
+  
+      if (data.success) {
+        const updatedPosts = items.map(post => {
+          if (post.id === postId) {
+            const updatedComments = [...post.comments, { userId, text: comment }];
+            return { ...post, comments: updatedComments };
+          }
+          return post;
+        });
+        
+        setPosts(updatedPosts);
+        setComment(""); 
+      } else {
+        console.error(data.error);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div>
       <div>
@@ -176,6 +213,12 @@ const Posts = () => {
                   {item.bookmarked ? "Bookmarked" : "Bookmark"}
                 </button>
               )}
+                <input
+                  type="text" placeholder="Write a comment..." value={comment} onChange={(e) => setComment(e.target.value)}
+                />
+                <button onClick={() => handleComment(item.id)} disabled={!userId}>
+                  Add Comment
+                </button>
             </div>
           );
         })}

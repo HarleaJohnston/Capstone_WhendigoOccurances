@@ -14,6 +14,7 @@ import Login from './Pages/Login';
 import Signup from './Pages/Signup'
 import Error from './ErrorPages/Error';
 import Error2 from './ErrorPage/Error2';
+import UserProfile from './Pages/UserProfile';
 
 const router = createBrowserRouter([
   {
@@ -64,6 +65,11 @@ const router = createBrowserRouter([
   {
     path: '/error2',
     element: <Error2/>,
+  }
+  ,
+  {
+    path: '/userProfile',
+    element: <UserProfile/>,
   }
 ]);
 

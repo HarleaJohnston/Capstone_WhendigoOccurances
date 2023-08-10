@@ -9,9 +9,15 @@ const port = 3666;
 
 const app = express();
 
-app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded());
+
+app.use(
+  cors({
+    origin: 'http://localhost:3000', 
+    credentials: true, 
+  })
+);
 
 
 app.use(session({
@@ -165,22 +171,45 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// app.post("/userExists", async (req, res) => {
-//   const { email, key } = req.body;
+app.get('/getUserData', async (req, res) => {
+  try {
+    const userId = req.session.userId;
+    console.log('Fetching user data for userId:', userId);
+    const user = await dal.getUserById(userId);
+    console.log('Fetched user data:', user);
+    res.json(user);
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 
-//   try {
-//     const user = await dal.getUserByEmail(email);
+app.post("/post/:id/comment", async (req, res) => {
+  const postId = req.params.id;
+  const userId = req.body.userId;
+  const commentText = req.body.comment;
 
-//     if (user && user.Key === key) {
-//       res.json({ success: true });
-//     } else {
-//       res.json({ success: false });
-//     }
-//   } catch (error) {
-//     console.error('Error checking credentials:', error);
-//     res.json({ success: false });
-//   }
-// });
+  try {
+    const post = await dal.getPostById(postId);
+
+    if (!post) {
+      return res.status(404).json({ success: false, error: "Post not found" });
+    }
+
+    const newComment = new commentModel({
+      postId: post._id,
+      userId: userId,
+      text: commentText,
+    });
+
+    await newComment.save();
+
+    res.json({ success: true, message: "Comment added successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: "Failed to add comment" });
+  }
+});
 
 app.listen(port, () => {
   console.log(`Server is listening on port: ${port}`);

@@ -18,7 +18,7 @@ const posts = new Schema(
         postBody: String,
         postImg: String,
         likes: Array, 
-        dislikes: Array
+        dislikes: Array,
     },
     { collection: collectionOne}
 );
@@ -26,19 +26,31 @@ const posts = new Schema(
 const postModel = mongoose.model("post", posts);
 
 const user = new Schema(
-    {
-        Key: String,
-        Gmail: String,
-        UserName: String,
-        Password: String,
-        BookMarked: Array,
-        NoteBook: String,
-        Friends: Array
-    },
-    { collection: collectionTwo}
+  {
+    _id: Schema.Types.ObjectId,
+    Key: String,
+    Gmail: String,
+    UserName: String,
+    Password: String,
+    BookMarked: Array,
+    NoteBook: String,
+    Friends: Array,
+  },
+  { collection: collectionTwo }
 );
 
 const UserModel = mongoose.model("user", user);
+
+const comments = new Schema(
+  {
+    postId: Schema.Types.ObjectId,
+    userId: String,
+    text: String,
+  },
+  { collection: "Comments" }
+);
+
+const commentModel = mongoose.model("comment", comments);
 
 exports.DAL = {
     //Post Dal Stuff
@@ -99,8 +111,11 @@ exports.DAL = {
 
 
     //User Dal Stuff
-    getUserByEmail: async (email) => {
+      getUserByEmail: async (email) => {
         return await UserModel.findOne({ Gmail: email }).exec();
+      },
+      getUserById: async (userId) => {
+        return await UserModel.findById(userId).exec();
       },
       generateKey: () => {
         return uuidv4();
@@ -136,6 +151,30 @@ exports.DAL = {
       
           await post.save();
           return post;
+        } catch (error) {
+          console.error(error);
+          throw error;
+        }
+      },
+      createComment: async (postId, userId, text) => {
+        try {
+          const newComment = new commentModel({
+            postId,
+            userId,
+            text,
+          });
+    
+          const savedComment = await newComment.save();
+          return savedComment;
+        } catch (error) {
+          console.error(error);
+          throw error;
+        }
+      },
+      getCommentsForPost: async (postId) => {
+        try {
+          const comments = await commentModel.find({ postId }).exec();
+          return comments;
         } catch (error) {
           console.error(error);
           throw error;
