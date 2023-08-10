@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom'; // Import Link
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -49,6 +49,7 @@ const Login = () => {
         </div>
         <button type="submit">Login</button>
       </form>
+      <Link to="/adminlogin">Admin Login</Link>
     </div>
   );
 };

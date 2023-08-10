@@ -15,6 +15,7 @@ import Signup from './Pages/Signup'
 import Error from './ErrorPages/Error';
 import Error2 from './ErrorPage/Error2';
 import UserProfile from './Pages/UserProfile';
+import AdminLogin from './Pages/AdminLogin';
 
 const router = createBrowserRouter([
   {
@@ -70,6 +71,10 @@ const router = createBrowserRouter([
   {
     path: '/userProfile',
     element: <UserProfile/>,
+  },
+  {
+    path: '/adminlogin',
+    element: <AdminLogin/>,
   }
 ]);
 
