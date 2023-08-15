@@ -7,6 +7,10 @@ const Posts = () => {
   const [comment, setComment] = useState("");
 
   useEffect(() => {
+    console.log(items);
+  }, [items]);
+
+  useEffect(() => {
     fetch("http://localhost:3666/post")
       .then((response) => {
         if (!response.ok) {
@@ -111,9 +115,16 @@ const Posts = () => {
       alert("Please log in to bookmark posts.");
       return;
     }
-
-    const newBookmarkedStatus = !items.find((item) => item.id === postId).bookmarked;
-
+  
+    const postToBookmark = items.find((item) => item._id === postId);
+  
+    if (!postToBookmark) {
+      console.error("Post not found.");
+      return;
+    }
+  
+    const newBookmarkedStatus = !postToBookmark.bookmarked;
+  
     fetch(`http://localhost:3666/post/${postId}/bookmark`, {
       method: "POST",
       headers: {
@@ -121,13 +132,13 @@ const Posts = () => {
       },
       body: JSON.stringify({ userId, bookmarked: newBookmarkedStatus }),
     })
-    .then(response => response.json())
-    .then(data => {
-      setPosts(prevPosts => prevPosts.map(post => post.id === postId ? { ...post, bookmarked: data.bookmarked } : post));
-    })
-    .catch(error => {
-      console.error(error);
-    });
+      .then(response => response.json())
+      .then(data => {
+        setPosts(prevPosts => prevPosts.map(post => post.id === postId ? { ...post, bookmarked: data.bookmarked } : post));
+      })
+      .catch(error => {
+        console.error("Error while bookmarking:", error);
+      });
   };
 
   const handleComment = async (postId) => {
@@ -178,7 +189,6 @@ const Posts = () => {
         <div className="spacer"></div>
         {items.map((item) => {
           const likeStatus = item.likes.includes(userId) ? "liked" : item.dislikes.includes(userId) ? "disliked" : null;
-          console.log(item.id)
           return (
             <div key={item.id} className="PostBox">
               <h3>{item.postDate}</h3>
@@ -189,25 +199,24 @@ const Posts = () => {
               {userId && (
                 <>
                   <button
-                    onClick={() => handleLike(item.id, likeStatus)}
+                    onClick={() => handleLike(item._id, likeStatus)}
                     disabled={!userId}
                   >
                     {likeStatus === "liked" ? "Unlike" : "Like"}
-                    {console.log(item.id)}
                   </button>
                   <button
-                    onClick={() => handleDislike(item.id, likeStatus)}
+                    onClick={() => handleDislike(item._id, likeStatus)}
                     disabled={!userId}
                   >
                     {likeStatus === "disliked" ? "Undislike" : "Dislike" }
-                    {console.log(item.id)}
+                    
                    
                   </button>
                 </>
               )}
               {userId && (
                 <button
-                  onClick={() => handleBookmark(item.id)}
+                  onClick={() => handleBookmark(item._id)}
                   disabled={item.bookmarked}
                 >
                   {item.bookmarked ? "Bookmarked" : "Bookmark"}
@@ -216,7 +225,7 @@ const Posts = () => {
                 <input
                   type="text" placeholder="Write a comment..." value={comment} onChange={(e) => setComment(e.target.value)}
                 />
-                <button onClick={() => handleComment(item.id)} disabled={!userId}>
+                <button onClick={() => handleComment(item._id)} disabled={!userId}>
                   Add Comment
                 </button>
             </div>

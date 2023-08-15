@@ -171,16 +171,14 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.get('/getUserData', async (req, res) => {
+app.get("/user/:id", async (req, res) => {
   try {
-    const userId = req.session.userId;
-    console.log('Fetching user data for userId:', userId);
-    const user = await dal.getUserById(userId);
-    console.log('Fetched user data:', user);
-    res.json(user);
+      let id = req.params.id;
+      let user = await dal.getUserById(id);
+      res.json(user);
   } catch (error) {
-    console.error('Error fetching user data:', error);
-    res.status(500).json({ error: 'Internal server error' });
+      console.error(error);
+      res.status(500).json({ error: 'Internal server error' });
   }
 });
 

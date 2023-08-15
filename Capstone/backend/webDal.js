@@ -115,7 +115,15 @@ exports.DAL = {
         return await UserModel.findOne({ Gmail: email }).exec();
       },
       getUserById: async (userId) => {
-        return await UserModel.findById(userId).exec();
+        try {
+          console.log('Fetching user by ID:', userId);
+          const user = await UserModel.findById(userId).exec();
+          console.log('Fetched user:', user);
+          return user;
+        } catch (error) {
+          console.error(error);
+          throw error;
+        }
       },
       generateKey: () => {
         return uuidv4();
@@ -144,9 +152,9 @@ exports.DAL = {
           }
       
           if (bookmarked) {
-            post.bookmarked = [...post.bookmarked, userId];
+            post.bookmarked.addToSet(userId);
           } else {
-            post.bookmarked = post.bookmarked.filter((id) => id !== userId);
+            post.bookmarked.pull(userId);
           }
       
           await post.save();
