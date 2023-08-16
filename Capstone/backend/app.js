@@ -194,22 +194,14 @@ app.post("/post/:id/comment", async (req, res) => {
       return res.status(404).json({ success: false, error: "Post not found" });
     }
 
-    const newComment = new commentModel({
-      postId: post._id,
-      userId: userId,
-      text: commentText,
-    });
+    const savedComment = await dal.createComment(postId, userId, commentText);
 
-    await newComment.save();
-
-    res.json({ success: true, message: "Comment added successfully" });
+    res.json({ success: true, message: "Comment added successfully", comment: savedComment });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: "Failed to add comment" });
   }
 });
-
-
 
 app.listen(port, () => {
   console.log(`Server is listening on port: ${port}`);

@@ -5,10 +5,27 @@ const Posts = () => {
   const [items, setPosts] = useState([]);
   const userId = sessionStorage.getItem('sessionKey');
   const [comment, setComment] = useState("");
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     console.log(items);
   }, [items]);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await fetch(`http://localhost:3666/user/${userId}`);
+        const userData = await response.json();
+        setUser(userData);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  
+    if (userId) {
+      fetchUser();
+    }
+  }, [userId]);
 
   useEffect(() => {
     fetch("http://localhost:3666/post")
@@ -134,6 +151,7 @@ const Posts = () => {
     })
       .then(response => response.json())
       .then(data => {
+        console.log("Bookmark API Response:", data);
         setPosts(prevPosts => prevPosts.map(post => post.id === postId ? { ...post, bookmarked: data.bookmarked } : post));
       })
       .catch(error => {
@@ -153,25 +171,35 @@ const Posts = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ userId, comment }),
+        body: JSON.stringify({ userId, userName: user.UserName, comment }), 
       });
-      
+  
       const data = await response.json();
   
       if (data.success) {
         const updatedPosts = items.map(post => {
           if (post.id === postId) {
-            const updatedComments = [...post.comments, { userId, text: comment }];
+            const updatedComments = [...post.comments, { userId, userName: user.UserName, text: comment }];
             return { ...post, comments: updatedComments };
           }
           return post;
         });
-        
+  
         setPosts(updatedPosts);
-        setComment(""); 
+        setComment("");
       } else {
         console.error(data.error);
       }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getUserById = async (userId) => {
+    try {
+      const response = await fetch(`http://localhost:3666/user/${userId}`);
+      const user = await response.json();
+      return user;
     } catch (error) {
       console.error(error);
     }
@@ -222,12 +250,21 @@ const Posts = () => {
                   {item.bookmarked ? "Bookmarked" : "Bookmark"}
                 </button>
               )}
-                <input
-                  type="text" placeholder="Write a comment..." value={comment} onChange={(e) => setComment(e.target.value)}
-                />
-                <button onClick={() => handleComment(item._id)} disabled={!userId}>
-                  Add Comment
-                </button>
+              <input type="text" placeholder="Write a comment..." value={comment} onChange={(e) => setComment(e.target.value)}/>
+              <button onClick={() => handleComment(item._id, user.UserName)} disabled={!userId}>
+                Add Comment
+              </button>
+              <div className="Comments">
+                {item.comments && item.comments.length > 0 ? (
+                  item.comments.map(comment => (
+                    <div key={comment._id} className="Comment">
+                      <p><strong>{comment.userName}</strong>: {comment.text}</p>
+                    </div>
+                  ))
+                ) : (
+                  <p>No comments yet.</p>
+                )}
+              </div>
             </div>
           );
         })}

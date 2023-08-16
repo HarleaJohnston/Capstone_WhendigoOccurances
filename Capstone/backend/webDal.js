@@ -27,10 +27,12 @@ const postModel = mongoose.model("post", posts);
 
 const user = new Schema(
   {
-    _id: Schema.Types.ObjectId,
+    //_id: Schema.Types.ObjectId,
     Key: String,
     Gmail: String,
     UserName: String,
+    Bio: String,
+    Name: String,
     Password: String,
     BookMarked: Array,
     NoteBook: String,
@@ -41,16 +43,24 @@ const user = new Schema(
 
 const UserModel = mongoose.model("user", user);
 
-const comments = new Schema(
-  {
-    postId: Schema.Types.ObjectId,
-    userId: String,
-    text: String,
+const commentSchema = new mongoose.Schema({
+  postId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Post',
+    required: true,
   },
-  { collection: "Comments" }
-);
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
+  text: {
+    type: String,
+    required: true,
+  },
+});
 
-const commentModel = mongoose.model("comment", comments);
+const commentModel = mongoose.model('Comment', commentSchema);
 
 exports.DAL = {
     //Post Dal Stuff
@@ -151,10 +161,19 @@ exports.DAL = {
             throw new Error("Post not found");
           }
       
+          if (!post.bookmarked) {
+            post.bookmarked = [];
+          }
+      
           if (bookmarked) {
-            post.bookmarked.addToSet(userId);
+            if (!post.bookmarked.includes(userId)) {
+              post.bookmarked.push(userId);
+            }
           } else {
-            post.bookmarked.pull(userId);
+            const index = post.bookmarked.indexOf(userId);
+            if (index !== -1) {
+              post.bookmarked.splice(index, 1);
+            }
           }
       
           await post.save();
@@ -171,7 +190,7 @@ exports.DAL = {
             userId,
             text,
           });
-    
+      
           const savedComment = await newComment.save();
           return savedComment;
         } catch (error) {

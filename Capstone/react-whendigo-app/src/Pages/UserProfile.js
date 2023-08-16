@@ -5,9 +5,9 @@ const UserProfile = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const userIdFromStorage = sessionStorage.getItem('userId'); 
+    const userId = sessionStorage.getItem('userId'); 
     console.log('Fetching user data...');
-    fetch(`http://localhost:3666/user/${userIdFromStorage}`, {
+    fetch(`http://localhost:3666/user/${userId}`, {
       method: 'GET',
       credentials: 'include',
     })
@@ -26,7 +26,7 @@ const UserProfile = () => {
       <div>
         <Nav/>
       </div>
-      <div>
+      <div className='Profile'>
         {user ? (
           <div>
             <h1>User Profile</h1>
