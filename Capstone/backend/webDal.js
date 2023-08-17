@@ -258,6 +258,22 @@ exports.DAL = {
        comparePasswords: async (inputPassword, hashedPassword) => {
         return await bcrypt.compare(inputPassword, hashedPassword);
       },
+      createFriendRequest: async (userId, friendId) => {
+        const friendRequest = new FriendRequestModel({
+          userId,
+          friendId,
+        });
+        await friendRequest.save();
+        return friendRequest;
+      },
+      getFriendRequest: async (userId, friendId) => {
+        try {
+          return await FriendRequestModel.findOne({ userId, friendId }).exec();
+        } catch (error) {
+          console.error(error);
+          throw error;
+        }
+      },
       
 
 };

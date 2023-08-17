@@ -210,7 +210,7 @@ const Posts = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ userId, userName: user.UserName, text: comment }),
+        body: JSON.stringify({ userId, userName: user.UserName, text: comment, postId }),
       });
   
       const data = await response.json();

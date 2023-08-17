@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import Nav from './Nav';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
+
 
 function UserProfile() {
   const [user, setUser] = useState(null);
-  const [isFriend, setIsFriend] = useState(false);
   const [notebookText, setNotebookText] = useState('');
+  const [items, setItems] = useState([]);
   const userId = sessionStorage.getItem('userId');
-  const isUserLoggedIn = Boolean(userId);
+  const isAdmin = user && user.Key === 'a84640d6-1c42-41aa-a53f-783edd2b4e64'; 
 
   useEffect(() => {
     console.log('Fetching user data...');
@@ -25,6 +26,19 @@ function UserProfile() {
         console.error('Error fetching user data:', error);
       });
   }, [userId]);
+
+  useEffect(() => {
+    console.log('Fetching post data...');
+    fetch("http://localhost:3666/post")
+      .then(response => response.json())
+      .then(data => {
+        console.log('Post data:', data);
+        setItems(data);
+      })
+      .catch(error => {
+        console.error('Error fetching post data:', error);
+      });
+  }, []);
 
   const handleNotebookChange = (event) => {
     setNotebookText(event.target.value);
@@ -50,7 +64,6 @@ function UserProfile() {
     }
   };
 
-
   return (
     <div>
       <div>
@@ -65,7 +78,26 @@ function UserProfile() {
             <p>Bio: {user.Bio}</p>
             <p>Name: {user.Name}</p>
             <p>Img: {user.Img}</p>
-            <div>
+            {isAdmin && (
+              <div>
+                <NavLink to='/create'
+                      className={({isActive, isPending}) => isPending ? "Pending" : isActive ? "Active" : ""}>
+                        Create
+                    </NavLink>
+
+                    {items.map((item) => (
+                  <div key={item.id} className="PostBox">
+                    <h3>{item.postDate}</h3>
+                    <p>{item.postImg}</p>
+                    <p>{item.postBody}</p>
+                    <p>Likes: {item.likes.length}</p>
+                    <p>Dislikes: {item.dislikes.length}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+            {!isAdmin && ( 
+              <div>
                 <textarea
                   value={notebookText}
                   onChange={handleNotebookChange}
@@ -73,7 +105,8 @@ function UserProfile() {
                 />
                 <button onClick={handleSaveNotebook}>Save Notebook</button>
               </div>
-            {user.NoteBook && ( // Display notebook text if it exists
+            )}
+            {user.NoteBook && ( 
               <div>
                 <h2>Notebook</h2>
                 <p>{user.NoteBook}</p>

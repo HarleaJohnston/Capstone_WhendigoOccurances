@@ -58,11 +58,7 @@ const Create = () => {
           <br />
           <label>
             Img:
-            <input
-              type="text"
-              value={img}
-              onChange={(e) => setImg(e.target.value)}
-            />
+            <input type="text" value={img} onChange={(e) => setImg(e.target.value)}/>
           </label>
           <br />
           <button type="submit">Create</button>
