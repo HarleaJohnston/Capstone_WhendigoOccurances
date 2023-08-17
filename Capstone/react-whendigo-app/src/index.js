@@ -16,6 +16,8 @@ import Error from './ErrorPages/Error';
 import Error2 from './ErrorPage/Error2';
 import UserProfile from './Pages/UserProfile';
 import AdminLogin from './Pages/AdminLogin';
+import UpdateUser from './CRUD/UpdateUser';
+import UserDisplay from './Pages/UserDisplay';
 
 const router = createBrowserRouter([
   {
@@ -73,8 +75,12 @@ const router = createBrowserRouter([
     element: <UserProfile/>,
   },
   {
-    path: '/adminlogin',
-    element: <AdminLogin/>,
+    path: '/updateUser',
+    element: <UpdateUser/>,
+  },
+  {
+    path: '/user/:id',
+    element: <UserDisplay/>,
   }
 ]);
 

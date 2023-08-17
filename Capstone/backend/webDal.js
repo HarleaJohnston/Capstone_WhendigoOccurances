@@ -33,6 +33,7 @@ const user = new Schema(
     UserName: String,
     Bio: String,
     Name: String,
+    Img:String,
     Password: String,
     BookMarked: Array,
     NoteBook: String,
@@ -52,6 +53,10 @@ const commentSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
+    required: true,
+  },
+  userName: { 
+    type: String,
     required: true,
   },
   text: {
@@ -124,6 +129,32 @@ exports.DAL = {
       getUserByEmail: async (email) => {
         return await UserModel.findOne({ Gmail: email }).exec();
       },
+      updateUserProfile: async (userId, updatedUserData) => {
+        try {
+          const updatedUser = await UserModel.findByIdAndUpdate(
+            userId,
+            { $set: updatedUserData },
+            { new: true }
+          ).exec();
+          return updatedUser;
+        } catch (error) {
+          console.error(error);
+          throw error;
+        }
+      },
+      updateUserNotebook: async (userId, updatedNotebook) => {
+        try {
+          const updatedUser = await UserModel.findByIdAndUpdate(
+            userId,
+            { $set: { NoteBook: updatedNotebook } },
+            { new: true }
+          ).exec();
+          return updatedUser;
+        } catch (error) {
+          console.error(error);
+          throw error;
+        }
+      },
       getUserById: async (userId) => {
         try {
           console.log('Fetching user by ID:', userId);
@@ -145,6 +176,7 @@ exports.DAL = {
           Username: username,
           Password: await bcrypt.hash(password, 10),
         };
+        console.log('newUser:', newUser);
       
         try {
           const result = await UserModel.create(newUser); 
@@ -154,40 +186,50 @@ exports.DAL = {
           throw error;
         }
       },
-      bookmarkPost: async (postId, userId, bookmarked) => {
+      bookmarkPost: async (userId, postId) => {
         try {
-          const post = await postModel.findById(postId).exec();
-          if (!post) {
-            throw new Error("Post not found");
+          const user = await UserModel.findById(userId);
+          if (!user) {
+            throw new Error("User not found");
           }
       
-          if (!post.bookmarked) {
-            post.bookmarked = [];
+          if (!user.bookmarkedPosts.includes(postId)) {
+            user.bookmarkedPosts.push(postId);
+            await user.save();
           }
-      
-          if (bookmarked) {
-            if (!post.bookmarked.includes(userId)) {
-              post.bookmarked.push(userId);
-            }
-          } else {
-            const index = post.bookmarked.indexOf(userId);
-            if (index !== -1) {
-              post.bookmarked.splice(index, 1);
-            }
-          }
-      
-          await post.save();
-          return post;
         } catch (error) {
           console.error(error);
           throw error;
         }
       },
-      createComment: async (postId, userId, text) => {
+      
+      unbookmarkPost: async (userId, postId) => {
+        try {
+          const user = await UserModel.findById(userId);
+          if (!user) {
+            throw new Error("User not found");
+          }
+      
+          if (!user.bookmarkedPosts) {
+            user.bookmarkedPosts = [];
+          }
+      
+          const index = user.bookmarkedPosts.indexOf(postId);
+          if (index !== -1) {
+            user.bookmarkedPosts.splice(index, 1);
+            await user.save();
+          }
+        } catch (error) {
+          console.error(error);
+          throw error;
+        }
+      },
+      createComment: async (postId, userId, userName, text) => {
         try {
           const newComment = new commentModel({
             postId,
             userId,
+            userName, 
             text,
           });
       

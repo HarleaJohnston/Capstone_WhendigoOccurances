@@ -3,9 +3,10 @@ import Nav from "./Nav";
 
 const Posts = () => {
   const [items, setPosts] = useState([]);
-  const userId = sessionStorage.getItem('sessionKey');
+  const userId = sessionStorage.getItem('userId');
   const [comment, setComment] = useState("");
   const [user, setUser] = useState(null);
+  const [commentsMap, setCommentsMap] = useState({});
 
   useEffect(() => {
     console.log(items);
@@ -47,6 +48,29 @@ const Posts = () => {
         console.error(error);
       });
   }, []);
+
+  useEffect(() => {
+    const fetchCommentsForPosts = async () => {
+      try {
+        const updatedCommentsMap = {};
+
+        await Promise.all(
+          items.map(async (item) => {
+            const response = await fetch(`http://localhost:3666/post/${item._id}/comments`);
+            const commentsData = await response.json();
+            updatedCommentsMap[item._id] = commentsData;
+          })
+        );
+
+        setCommentsMap(updatedCommentsMap);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchCommentsForPosts();
+  }, [items]);
+
 
   const handleLike = (postId, likeStatus) => {
     if (!userId) {
@@ -127,35 +151,50 @@ const Posts = () => {
       });
   };
 
-  const handleBookmark = (postId) => {
+  const handleBookmark = (postId, bookmarkedStatus) => {
     if (!userId) {
       alert("Please log in to bookmark posts.");
       return;
     }
   
-    const postToBookmark = items.find((item) => item._id === postId);
-  
-    if (!postToBookmark) {
-      console.error("Post not found.");
-      return;
-    }
-  
-    const newBookmarkedStatus = !postToBookmark.bookmarked;
+    const updatedPosts = items.map((post) => {
+      if (post._id === postId) {
+        return { ...post, bookmarked: bookmarkedStatus };
+      }
+      return post;
+    });
+    setPosts(updatedPosts);
   
     fetch(`http://localhost:3666/post/${postId}/bookmark`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ userId, bookmarked: newBookmarkedStatus }),
+      body: JSON.stringify({ userId, bookmarked: bookmarkedStatus }),
     })
-      .then(response => response.json())
-      .then(data => {
-        console.log("Bookmark API Response:", data);
-        setPosts(prevPosts => prevPosts.map(post => post.id === postId ? { ...post, bookmarked: data.bookmarked } : post));
+      .then((response) => response.json())
+      .then((data) => {
+        if (!data.success) {
+          console.error("Failed to toggle bookmark:", data.error);
+          // Revert the changes in case of failure
+          const revertedPosts = items.map((post) => {
+            if (post._id === postId) {
+              return { ...post, bookmarked: !bookmarkedStatus };
+            }
+            return post;
+          });
+          setPosts(revertedPosts);
+        }
       })
-      .catch(error => {
-        console.error("Error while bookmarking:", error);
+      .catch((error) => {
+        console.error("Error while toggling bookmark:", error);
+        const revertedPosts = items.map((post) => {
+          if (post._id === postId) {
+            return { ...post, bookmarked: !bookmarkedStatus };
+          }
+          return post;
+        });
+        setPosts(revertedPosts);
       });
   };
 
@@ -171,14 +210,14 @@ const Posts = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ userId, userName: user.UserName, comment }), 
+        body: JSON.stringify({ userId, userName: user.UserName, text: comment }),
       });
   
       const data = await response.json();
   
       if (data.success) {
-        const updatedPosts = items.map(post => {
-          if (post.id === postId) {
+        const updatedPosts = items.map((post) => {
+          if (post._id === postId) { 
             const updatedComments = [...post.comments, { userId, userName: user.UserName, text: comment }];
             return { ...post, comments: updatedComments };
           }
@@ -195,16 +234,6 @@ const Posts = () => {
     }
   };
 
-  const getUserById = async (userId) => {
-    try {
-      const response = await fetch(`http://localhost:3666/user/${userId}`);
-      const user = await response.json();
-      return user;
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   return (
     <div>
       <div>
@@ -216,6 +245,7 @@ const Posts = () => {
         <h2 className="right">Post Feed:</h2>
         <div className="spacer"></div>
         {items.map((item) => {
+          console.log("Comments:", item.comments);
           const likeStatus = item.likes.includes(userId) ? "liked" : item.dislikes.includes(userId) ? "disliked" : null;
           return (
             <div key={item.id} className="PostBox">
@@ -243,24 +273,30 @@ const Posts = () => {
                 </>
               )}
               {userId && (
-                <button
-                  onClick={() => handleBookmark(item._id)}
-                  disabled={item.bookmarked}
-                >
+                <button onClick={() => handleBookmark(item._id, item.bookmarked)} disabled={!userId}>
                   {item.bookmarked ? "Bookmarked" : "Bookmark"}
                 </button>
               )}
-              <input type="text" placeholder="Write a comment..." value={comment} onChange={(e) => setComment(e.target.value)}/>
-              <button onClick={() => handleComment(item._id, user.UserName)} disabled={!userId}>
-                Add Comment
-              </button>
-              <div className="Comments">
-                {item.comments && item.comments.length > 0 ? (
-                  item.comments.map(comment => (
-                    <div key={comment._id} className="Comment">
-                      <p><strong>{comment.userName}</strong>: {comment.text}</p>
-                    </div>
-                  ))
+            <input type="text" placeholder="Write a comment..." value={comment} onChange={(e) => setComment(e.target.value)} />
+            <button onClick={() => handleComment(item._id, user.UserName)} disabled={!userId}>
+              Add Comment
+            </button>
+            <div className="Comments">
+            {commentsMap[item._id] && commentsMap[item._id].length > 0 ? (
+              commentsMap[item._id].map((comment) => (
+                <div key={comment._id} className="Comment">
+                  <p>
+                    <strong>
+                      {comment.userId === userId ? (
+                        <a href={`/userProfile`}>{comment.userName}</a>
+                      ) : (
+                        <a href={`/user/${comment.userId}`}>{comment.userName}</a>
+                      )}
+                    </strong>
+                    : {comment.text}
+                    </p>
+                  </div>
+                ))
                 ) : (
                   <p>No comments yet.</p>
                 )}

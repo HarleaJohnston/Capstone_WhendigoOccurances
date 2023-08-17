@@ -64,6 +64,19 @@ return res.json({message: "Post created successfully"});
 
 });
 
+app.put("/user/:id", async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const updatedUserData = req.body;
+    const updatedUser = await dal.updateUserProfile(userId, updatedUserData);
+
+    res.json(updatedUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 app.post("/post/:id/like", async (req, res) => {
   const postId = req.params.id;
   const userId = req.body.userId; 
@@ -96,11 +109,15 @@ app.post("/post/:id/bookmark", async (req, res) => {
   const bookmarked = req.body.bookmarked;
 
   try {
-    const post = await dal.bookmarkPost(postId, userId, bookmarked);
-    res.json({ success: true, bookmarked: post.bookmarked });
+    if (bookmarked) {
+      await dal.bookmarkPost(userId, postId);
+    } else {
+      await dal.unbookmarkPost(userId, postId);
+    }
+    res.json({ success: true });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ success: false, error: "Failed to bookmark post" });
+    res.status(500).json({ success: false, error: "Failed to toggle bookmark" });
   }
 });
 
@@ -163,7 +180,7 @@ app.post("/login", async (req, res) => {
     }
 
     const key = dal.generateKey();
-    req.session.userId = user._id; // Store the user ID in the session
+    req.session.userId = user._id; 
     res.json({ success: true, key: key, userId: user._id });
   } catch (error) {
     console.error("Error during login:", error);
@@ -185,7 +202,8 @@ app.get("/user/:id", async (req, res) => {
 app.post("/post/:id/comment", async (req, res) => {
   const postId = req.params.id;
   const userId = req.body.userId;
-  const commentText = req.body.comment;
+  const userName = req.body.userName; 
+  const commentText = req.body.text; 
 
   try {
     const post = await dal.getPostById(postId);
@@ -194,7 +212,7 @@ app.post("/post/:id/comment", async (req, res) => {
       return res.status(404).json({ success: false, error: "Post not found" });
     }
 
-    const savedComment = await dal.createComment(postId, userId, commentText);
+    const savedComment = await dal.createComment(postId, userId, userName, commentText);
 
     res.json({ success: true, message: "Comment added successfully", comment: savedComment });
   } catch (error) {
@@ -202,6 +220,92 @@ app.post("/post/:id/comment", async (req, res) => {
     res.status(500).json({ success: false, error: "Failed to add comment" });
   }
 });
+
+app.get("/post/:id/comments", async (req, res) => {
+  const postId = req.params.id;
+
+  try {
+    const comments = await dal.getCommentsForPost(postId);
+    res.json(comments);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.post("/user/:id/friends/:friendId", async (req, res) => {
+  const userId = req.params.id;
+  const friendId = req.params.friendId;
+
+  try {
+    const user = await dal.getUserById(userId);
+    const friend = await dal.getUserById(friendId);
+
+    if (!user || !friend) {
+      return res.status(404).json({ success: false, error: "User or friend not found" });
+    }
+
+    if (!user.Friends.includes(friendId)) {
+      user.Friends.push(friendId);
+      await user.save();
+    }
+
+    if (!friend.Friends.includes(userId)) {
+      friend.Friends.push(userId);
+      await friend.save();
+    }
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: "Failed to establish friendship" });
+  }
+});
+
+app.get("/user/:id/friends/:friendId", async (req, res) => {
+  const userId = req.params.id;
+  const friendId = req.params.friendId;
+
+  try {
+    const user = await dal.getUserById(userId);
+
+    if (!user) {
+      return res.status(404).json({ success: false, error: "User not found" });
+    }
+
+    const isFriend = user.Friends.includes(friendId);
+
+    res.json({ isFriend });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: "Failed to check friend status" });
+  }
+});
+
+app.get("/user/:id/notebook", async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const user = await dal.getUserById(userId);
+    res.json({ notebookText: user.NoteBook });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to get notebook text" });
+  }
+});
+
+app.put("/user/:id/notebook", async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const updatedNotebook = req.body.notebookText;
+    const updatedUser = await dal.updateUserNotebook(userId, updatedNotebook);
+
+    res.json(updatedUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to update notebook text" });
+  }
+});
+
 
 app.listen(port, () => {
   console.log(`Server is listening on port: ${port}`);
