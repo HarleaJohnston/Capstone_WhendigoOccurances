@@ -41,6 +41,7 @@ const Posts = () => {
           ...item,
           likes: item.likes || [],
           dislikes: item.dislikes || [],
+          bookmarked: item.bookmarked || []
         }));
         setPosts(postsWithArrays);
       })
@@ -151,7 +152,7 @@ const Posts = () => {
       });
   };
 
-  const handleBookmark = (postId, bookmarkedStatus) => {
+  const handleBookmark = async (postId, bookmarkedStatus) => {
     if (!userId) {
       alert("Please log in to bookmark posts.");
       return;
@@ -165,37 +166,25 @@ const Posts = () => {
     });
     setPosts(updatedPosts);
   
-    fetch(`http://localhost:3666/post/${postId}/bookmark`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ userId, bookmarked: bookmarkedStatus }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (!data.success) {
-          console.error("Failed to toggle bookmark:", data.error);
-          // Revert the changes in case of failure
-          const revertedPosts = items.map((post) => {
-            if (post._id === postId) {
-              return { ...post, bookmarked: !bookmarkedStatus };
-            }
-            return post;
-          });
-          setPosts(revertedPosts);
-        }
+    try {
+      fetch(`http://localhost:3666/post/${postId}/bookmark`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId, postId, bookmarked: bookmarkedStatus }),
       })
-      .catch((error) => {
-        console.error("Error while toggling bookmark:", error);
-        const revertedPosts = items.map((post) => {
-          if (post._id === postId) {
-            return { ...post, bookmarked: !bookmarkedStatus };
-          }
-          return post;
-        });
-        setPosts(revertedPosts);
+
+    } catch (error) {
+      console.error("Error while toggling bookmark:", error);
+      const revertedPosts = items.map((post) => {
+        if (post._id === postId) {
+          return { ...post, bookmarked: !bookmarkedStatus };
+        }
+        return post;
       });
+      setPosts(revertedPosts);
+    }
   };
 
   const handleComment = async (postId) => {
@@ -274,7 +263,7 @@ const Posts = () => {
               )}
               {userId && (
                 <button onClick={() => handleBookmark(item._id, item.bookmarked)} disabled={!userId}>
-                  {item.bookmarked ? "Bookmarked" : "Bookmark"}
+                  {item.bookmarked ? "Bookmark" : "Bookmarked"}
                 </button>
               )}
             <input type="text" placeholder="Write a comment..." value={comment} onChange={(e) => setComment(e.target.value)} />

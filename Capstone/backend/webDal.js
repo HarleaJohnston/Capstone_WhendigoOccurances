@@ -123,6 +123,26 @@ exports.DAL = {
         throw error;
       }
     },
+    bookmarkPost: async (postId, userId, bookmarked) => {
+      try {
+        const post = await postModel.findById(postId).exec();
+        if (!post) {
+          throw new Error("Post not found");
+        }
+    
+        if (bookmarked) {
+          post.bookmarked.addToSet(userId);
+        } else {
+          post.bookmarked.pull(userId);
+        }
+    
+        await post.save();
+        return post;
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
+    },
 
 
     //User Dal Stuff
@@ -186,55 +206,26 @@ exports.DAL = {
           throw error;
         }
       },
-      bookmarkPost: async (userId, postId) => {
+      bookmarkPost: async (postId, userId, bookmarked) => {
         try {
-          const user = await UserModel.findById(userId);
-          if (!user) {
-            throw new Error("User not found");
+          const post = await postModel.findById(postId).exec();
+          if (!post) {
+            throw new Error("Post not found");
           }
       
-          if (!user.bookmarkedPosts.includes(postId)) {
-            user.bookmarkedPosts.push(postId);
-            await user.save();
-          }
-        } catch (error) {
-          console.error(error);
-          throw error;
-        }
-      },
-      
-      unbookmarkPost: async (userId, postId) => {
-        try {
-          const user = await UserModel.findById(userId);
-          if (!user) {
-            throw new Error("User not found");
+          if (!post.bookmarked) {
+            post.bookmarked = [];
           }
       
-          if (!user.bookmarkedPosts) {
-            user.bookmarkedPosts = [];
+          const userIndex = post.bookmarked.indexOf(userId);
+          if (bookmarked && userIndex === -1) {
+            post.bookmarked.push(userId); 
+          } else if (!bookmarked && userIndex !== -1) {
+            post.bookmarked.splice(userIndex, 1); 
           }
       
-          const index = user.bookmarkedPosts.indexOf(postId);
-          if (index !== -1) {
-            user.bookmarkedPosts.splice(index, 1);
-            await user.save();
-          }
-        } catch (error) {
-          console.error(error);
-          throw error;
-        }
-      },
-      createComment: async (postId, userId, userName, text) => {
-        try {
-          const newComment = new commentModel({
-            postId,
-            userId,
-            userName, 
-            text,
-          });
-      
-          const savedComment = await newComment.save();
-          return savedComment;
+          await post.save();
+          return post;
         } catch (error) {
           console.error(error);
           throw error;

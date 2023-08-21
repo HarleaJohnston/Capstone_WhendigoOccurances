@@ -112,20 +112,26 @@ app.post("/post/:id/dislike", async (req, res) => {
 });
 
 app.post("/post/:id/bookmark", async (req, res) => {
-  const postId = req.params.id;
-  const userId = req.body.userId;
-  const bookmarked = req.body.bookmarked;
+  const userId = req.params.id;
+  const { postId, bookmarked } = req.body;
 
   try {
-    if (bookmarked) {
-      await dal.bookmarkPost(userId, postId);
-    } else {
-      await dal.unbookmarkPost(userId, postId);
+    const user = await dal.getUserById(userId);
+    if (!user) {
+      return res.status(404).json({ success: false, error: "User not found" });
     }
+
+    if (bookmarked) {
+      user.bookmarked.addToSet(postId);
+    } else {
+      user.bookmarked.pull(postId);
+    }
+
+    await user.save();
     res.json({ success: true });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ success: false, error: "Failed to toggle bookmark" });
+    res.status(500).json({ success: false, error: "Failed to update bookmark" });
   }
 });
 
