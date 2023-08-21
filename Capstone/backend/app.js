@@ -2,6 +2,9 @@ const express = require("express");
 const session = require("express-session"); 
 const cors = require("cors");
 const { v4: uuidv4 } = require('uuid');
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
+const path = require('path');
 
 const dal = require ("./webDal").DAL;
 
@@ -64,12 +67,17 @@ return res.json({message: "Post created successfully"});
 
 });
 
-app.put("/user/:id", async (req, res) => {
+app.use('/userimg', express.static(path.join(__dirname, 'uploads')));
+
+app.put("/user/:id", upload.single('Img'), async (req, res) => {
   try {
     const userId = req.params.id;
     const updatedUserData = req.body;
-    const updatedUser = await dal.updateUserProfile(userId, updatedUserData);
+    if (req.file) {
+      updatedUserData.Img = req.file.path; 
+    }
 
+    const updatedUser = await dal.updateUserProfile(userId, updatedUserData);
     res.json(updatedUser);
   } catch (error) {
     console.error(error);

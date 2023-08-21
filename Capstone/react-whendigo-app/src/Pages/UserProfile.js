@@ -65,24 +65,32 @@ function UserProfile() {
   };
 
   return (
-    <div>
+    <div className='Column'>
       <div>
         <Nav/>
       </div>
-      <div className='Profile'>
+      <div className='ContentBox2'>
         {user ? (
           <div>
-            <h1>User Profile</h1>
-            <p>Email: {user.Gmail}</p>
-            <p>Username: {user.UserName}</p>
-            <p>Bio: {user.Bio}</p>
-            <p>Name: {user.Name}</p>
-            <p>Img: {user.Img}</p>
+            <div className='Row3'>
+              <div className='Center'>
+                <div>
+                <img className='ImgSize2' src={`${process.env.PUBLIC_URL}/userimg/${user.Img}`} alt="Profile" />
+                </div>
+                <div className='Profile'>
+                  <h3>Username: {user.UserName}</h3>
+                  <p>Pronouns: {user.Name}</p>
+                  <p>Bio: {user.Bio}</p>
+                  <Link to='/updateUser'>
+                    <button>Edit Profile</button>
+                  </Link>
+                </div>
+              </div>
+            </div>
             {isAdmin && (
               <div>
-                <NavLink to='/create'
-                      className={({isActive, isPending}) => isPending ? "Pending" : isActive ? "Active" : ""}>
-                        Create
+                <NavLink to='/create' className={({isActive, isPending}) => isPending ? "Pending" : isActive ? "Active" : ""}>
+                        <button>Create</button>
                     </NavLink>
 
                     {items.map((item) => (
@@ -112,10 +120,6 @@ function UserProfile() {
                 <p>{user.NoteBook}</p>
               </div>
             )}
-            
-            <Link to='/updateUser'>
-              <button>Edit Profile</button>
-            </Link>
           </div>
         ) : (
           <p>Loading user data...</p>

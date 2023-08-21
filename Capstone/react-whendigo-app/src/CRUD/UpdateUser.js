@@ -7,7 +7,7 @@ function UpdateUser() {
   const [updatedUser, setUpdatedUser] = useState({
     Bio: '',
     UserName: '',
-    Img: '',
+    Img: null,
     Name: '',
   });
 
@@ -35,14 +35,25 @@ function UpdateUser() {
     }));
   };
 
+  const handleImageUpload = e => {
+    const imageFile = e.target.files[0];
+    setUpdatedUser(prevUser => ({
+      ...prevUser,
+      Img: imageFile,
+    }));
+  };
+
   const handleUpdateClick = () => {
     const userId = sessionStorage.getItem('userId');
+    const formData = new FormData();
+    formData.append('Bio', updatedUser.Bio);
+    formData.append('UserName', updatedUser.UserName);
+    formData.append('Name', updatedUser.Name);
+    formData.append('Img', updatedUser.Img); 
+
     fetch(`http://localhost:3666/user/${userId}`, {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(updatedUser),
+      body: formData, 
       credentials: 'include',
     })
       .then(response => response.json())
@@ -54,6 +65,7 @@ function UpdateUser() {
       .catch(error => {
         console.error('Error updating user data:', error);
       });
+
   };
 
   return (
@@ -71,10 +83,10 @@ function UpdateUser() {
           </label>
           <label>
             Profile Pic:
-          <input type='text' name='Img' value={updatedUser.Img} onChange={handleInputChange}/>
+            <input type='file' accept='image/*' onChange={handleImageUpload} />
           </label>
           <label>
-            Name:
+            Pronouns:
           <input type='text' name='Name' value={updatedUser.Name} onChange={handleInputChange}/>
           </label>
           <button onClick={handleUpdateClick}>Update</button>
