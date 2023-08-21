@@ -1,8 +1,8 @@
 const { mongoose, Schema } = require("mongoose");
 const bcrypt = require("bcrypt");
 const { v4: uuidv4 } = require("uuid");
-const connectionStringz = "mongodb://127.0.0.1:27017/Whendigo_Occurances_DB";
-//const connectionStringz = "mongodb+srv://quillianrenae:8YDtlJxCKoZrlfgo@cluster0.sv3zblq.mongodb.net/";
+//const connectionStringz = "mongodb://127.0.0.1:27017/Whendigo_Occurances_DB";
+const connectionStringz = "mongodb+srv://quillianrenae:8YDtlJxCKoZrlfgo@cluster0.sv3zblq.mongodb.net/Whendigo_Occurances_DB";
 const collectionOne = "Posts"
 const collectionTwo = "Users"
 
