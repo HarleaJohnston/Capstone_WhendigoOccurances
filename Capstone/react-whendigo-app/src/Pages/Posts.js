@@ -256,8 +256,6 @@ const Posts = () => {
                     disabled={!userId}
                   >
                     {likeStatus === "disliked" ? "Undislike" : "Dislike" }
-                    
-                   
                   </button>
                 </>
               )}
@@ -266,30 +264,31 @@ const Posts = () => {
                   {item.bookmarked ? "Bookmark" : "Bookmarked"}
                 </button>
               )}
-            <input type="text" placeholder="Write a comment..." value={comment} onChange={(e) => setComment(e.target.value)} />
-            <button onClick={() => handleComment(item._id, user.UserName)} disabled={!userId}>
-              Add Comment
-            </button>
-            <div className="Comments">
-            {commentsMap[item._id] && commentsMap[item._id].length > 0 ? (
-              commentsMap[item._id].map((comment) => (
-                <div key={comment._id} className="Comment">
-                  <p>
-                    <strong>
-                      {comment.userId === userId ? (
-                        <a href={`/userProfile`}>{comment.userName}</a>
-                      ) : (
-                        <a href={`/user/${comment.userId}`}>{comment.userName}</a>
-                      )}
-                    </strong>
-                    : {comment.text}
-                    </p>
+                <div className="spacer"></div>
+                <input type="text" placeholder="Write a comment..." value={comment} onChange={(e) => setComment(e.target.value)} />
+                <button onClick={() => handleComment(item._id, user.UserName)} disabled={!userId}>
+                  Add Comment
+                </button>
+                <div className="Comments">
+                {commentsMap[item._id] && commentsMap[item._id].length > 0 ? (
+                  commentsMap[item._id].map((comment) => (
+                    <div key={comment._id} className="Comment">
+                      <p>
+                        <strong>
+                          {comment.userId === userId ? (
+                            <a href={`/userProfile`}>{comment.userName}</a>
+                          ) : (
+                            <a href={`/user/${comment.userId}`}>{comment.userName}</a>
+                          )}
+                        </strong>
+                        : {comment.text}
+                        </p>
+                      </div>
+                    ))
+                    ) : (
+                      <p>No comments yet.</p>
+                    )}
                   </div>
-                ))
-                ) : (
-                  <p>No comments yet.</p>
-                )}
-              </div>
             </div>
           );
         })}

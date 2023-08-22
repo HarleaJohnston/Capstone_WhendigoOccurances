@@ -75,7 +75,7 @@ function UserProfile() {
             <div className='Row3'>
               <div className='Center'>
                 <div>
-                <img className='ImgSize2' src={`${process.env.PUBLIC_URL}/userimg/${user.Img}`} alt="Profile" />
+                <img className='ImgSize2' src={user.Img} alt="Profile" />
                 </div>
                 <div className='Profile'>
                   <h3>Username: {user.UserName}</h3>

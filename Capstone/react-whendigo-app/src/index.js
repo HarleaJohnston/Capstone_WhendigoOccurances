@@ -15,7 +15,6 @@ import Signup from './Pages/Signup'
 import Error from './ErrorPages/Error';
 import Error2 from './ErrorPage/Error2';
 import UserProfile from './Pages/UserProfile';
-import AdminLogin from './Pages/AdminLogin';
 import UpdateUser from './CRUD/UpdateUser';
 import UserDisplay from './Pages/UserDisplay';
 

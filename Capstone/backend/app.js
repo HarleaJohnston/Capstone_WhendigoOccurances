@@ -3,8 +3,10 @@ const session = require("express-session");
 const cors = require("cors");
 const { v4: uuidv4 } = require('uuid');
 const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
-const path = require('path');
+const sanitize = require('sanitize-filename');
+
+
+
 
 const dal = require ("./webDal").DAL;
 
@@ -28,6 +30,21 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
 }));
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'public/images/profile-pictures'); 
+  },
+  filename: function (req, file, cb) {
+    const sanitizedFilename = sanitize(file.originalname); 
+    cb(null, sanitizedFilename);
+  },
+});
+
+const upload = multer({ storage: storage });
+
+app.use(express.static('public'));
+
 
 app.get("/", (req, res) => {
     res.json({Message: "Welcome to Whendigo Occurances!"})
@@ -67,14 +84,12 @@ return res.json({message: "Post created successfully"});
 
 });
 
-app.use('/userimg', express.static(path.join(__dirname, 'uploads')));
-
 app.put("/user/:id", upload.single('Img'), async (req, res) => {
   try {
     const userId = req.params.id;
     const updatedUserData = req.body;
     if (req.file) {
-      updatedUserData.Img = req.file.path; 
+      updatedUserData.Img = `/images/profile-pictures/${req.file.filename}`;
     }
 
     const updatedUser = await dal.updateUserProfile(userId, updatedUserData);

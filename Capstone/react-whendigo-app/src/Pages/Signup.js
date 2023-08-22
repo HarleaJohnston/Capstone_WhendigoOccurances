@@ -37,23 +37,24 @@ const Signup = () => {
   };
 
   return (
-    <div className='Row'>
+    <div className='SignLogBox'>
       <h2>Sign-Up</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email:</label>
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        </div>
-        <div>
-          <label>Username:</label>
-          <input type="username" value={username} onChange={(e) => setUsername(e.target.value)} />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        </div>
-        <button type="submit">Signup</button>
-      </form>
+        <form onSubmit={handleSubmit}>
+          <div class="form-floating">
+            <input type="email" class="form-control" id="floatingInput" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@example.com"/>
+            <label for="floatingInput">Email address</label>
+          </div>
+          <div class="form-floating">
+            <input type="username" class="form-control" id="floatingPassword" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username"/>
+            <label for="floatingPassword">Password</label>
+          </div>
+          <div class="form-floating">
+            <input type="password" class="form-control" id="floatingPassword" value={password} onChange={(e) => setPassword(e.target.value)}  placeholder="Password"/>
+            <label for="floatingPassword">Password</label>
+          </div>
+          <button class="btn btn-primary w-100 py-2" type="submit">Sign Up</button>
+          <p class="mt-5 mb-3 text-body-secondary">© 2017–2023</p>
+        </form>
     </div>
   );
 };

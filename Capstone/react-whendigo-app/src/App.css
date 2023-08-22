@@ -159,7 +159,19 @@ padding: 2px 5px;
   background-color: #F1EFED;
   border-radius: 7px;
   width: 75%;
-  margin: 0 auto; 
+  margin-bottom: 20px;
   padding: 5px;
   flex-direction: column;
+}
+
+.SignLogBox{
+  display: flex;
+  justify-self: center;
+  flex-direction: column;
+  background-color: #F1EFED;
+  align-items: center;
+  text-align: center;
+  border-radius: 7px;
+  width: 50%;
+  margin: 0 auto; 
 }
