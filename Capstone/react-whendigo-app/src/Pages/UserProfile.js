@@ -5,6 +5,7 @@ import { Link, NavLink } from 'react-router-dom';
 
 function UserProfile() {
   const [user, setUser] = useState(null);
+  const [userImg, setUserImg] = useState("");
   const [notebookText, setNotebookText] = useState('');
   const [items, setItems] = useState([]);
   const userId = sessionStorage.getItem('userId');
@@ -26,6 +27,10 @@ function UserProfile() {
         console.error('Error fetching user data:', error);
       });
   }, [userId]);
+
+  useEffect(() => {
+    setUserImg(`http://localhost:3666${user.Img}`);
+  }, [user]);
 
   useEffect(() => {
     console.log('Fetching post data...');
@@ -75,7 +80,7 @@ function UserProfile() {
             <div className='Row3'>
               <div className='Center'>
                 <div>
-                <img className='ImgSize2' src={user.Img} alt="Profile" />
+                <img className='ImgSize2' src={userImg} alt="Profile" />
                 </div>
                 <div className='Profile'>
                   <h3>Username: {user.UserName}</h3>

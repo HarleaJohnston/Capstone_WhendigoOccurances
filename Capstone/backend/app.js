@@ -132,6 +132,7 @@ app.post("/post/:id/bookmark", async (req, res) => {
 
   try {
     const user = await dal.getUserById(userId);
+    console.log("USER?", user);
     if (!user) {
       return res.status(404).json({ success: false, error: "User not found" });
     }

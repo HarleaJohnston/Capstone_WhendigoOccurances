@@ -46,7 +46,7 @@ const Signup = () => {
           </div>
           <div class="form-floating">
             <input type="username" class="form-control" id="floatingPassword" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username"/>
-            <label for="floatingPassword">Password</label>
+            <label for="floatingPassword">Username</label>
           </div>
           <div class="form-floating">
             <input type="password" class="form-control" id="floatingPassword" value={password} onChange={(e) => setPassword(e.target.value)}  placeholder="Password"/>
