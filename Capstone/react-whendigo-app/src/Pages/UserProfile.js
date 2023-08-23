@@ -10,6 +10,9 @@ function UserProfile() {
   const [items, setItems] = useState([]);
   const userId = sessionStorage.getItem('userId');
   const isAdmin = user && user.Key === 'a84640d6-1c42-41aa-a53f-783edd2b4e64'; 
+  const [allUsers, setAllUsers] = useState([]);
+  const [loggedInUserFriendedBy, setLoggedInUserFriendedBy] = useState([]);
+  const loggedInUserId = sessionStorage.getItem('userId');
 
   useEffect(() => {
     console.log('Fetching user data...');
@@ -28,9 +31,9 @@ function UserProfile() {
       });
   }, [userId]);
 
-  useEffect(() => {
-    setUserImg(`http://localhost:3666${user.Img}`);
-  }, [user]);
+  // useEffect(() => {
+  //   setUserImg(`http://localhost:3666${user.Img}`);
+  // }, [user]);
 
   useEffect(() => {
     console.log('Fetching post data...');
@@ -69,6 +72,35 @@ function UserProfile() {
     }
   };
 
+  useEffect(() => {
+    const fetchAllUsers = async () => {
+      try {
+        const response = await fetch("http://localhost:3666/users");
+        const usersData = await response.json();
+        return usersData; 
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchAllUsers().then(usersData => {
+      setAllUsers(usersData);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (loggedInUserId && allUsers && allUsers.length > 0) {
+      const friendedBy = [];
+      for (const user of allUsers) {
+        if (user.Friends.includes(loggedInUserId)) {
+          friendedBy.push(user.UserName);
+        }
+      }
+      setLoggedInUserFriendedBy(friendedBy);
+    }
+  }, [loggedInUserId, allUsers]);
+  
+
   return (
     <div className='Column'>
       <div>
@@ -89,6 +121,25 @@ function UserProfile() {
                   <Link to='/updateUser'>
                     <button>Edit Profile</button>
                   </Link>
+                  <div>
+                  {loggedInUserFriendedBy.length > 0 && (
+                    <div>
+                      <h3>Friended By:</h3>
+                        {loggedInUserFriendedBy.map((username, index) => {
+                          const user = allUsers.find(user => user.UserName === username);
+                          if (user) {
+                            return (
+                              <li key={index}>
+                                <Link to={`/user/${user._id}`}>{username}</Link>
+                              </li>
+                            );
+                          } else {
+                            return null; 
+                          }
+                        })}
+                    </div>
+                  )}
+                  </div>
                 </div>
               </div>
             </div>

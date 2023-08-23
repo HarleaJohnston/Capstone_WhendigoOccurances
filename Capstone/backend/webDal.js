@@ -68,6 +68,7 @@ const commentSchema = new mongoose.Schema({
 
 const commentModel = mongoose.model('Comment', commentSchema);
 
+
 exports.DAL = {
     //Post Dal Stuff
     create: (postDate, postBody, postImg) => {
@@ -178,12 +179,18 @@ exports.DAL = {
       },
       getUserById: async (userId) => {
         try {
-          console.log('Fetching user by ID:', userId);
           const user = await UserModel.findById(userId).exec();
-          console.log('Fetched user:', user);
           return user;
         } catch (error) {
           console.error(error);
+          throw error;
+        }
+      },
+      getAllUsers: async () => {
+        try {
+          const users = await UserModel.find(); 
+          return users;
+        } catch (error) {
           throw error;
         }
       },
@@ -197,7 +204,7 @@ exports.DAL = {
           Username: username,
           Password: await bcrypt.hash(password, 10),
         };
-        console.log('newUser:', newUser);
+
       
         try {
           const result = await UserModel.create(newUser); 

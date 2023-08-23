@@ -127,20 +127,23 @@ app.post("/post/:id/dislike", async (req, res) => {
 });
 
 app.post("/post/:id/bookmark", async (req, res) => {
-  const userId = req.params.id;
+  const userId = req.body.userId;
   const { postId, bookmarked } = req.body;
+
 
   try {
     const user = await dal.getUserById(userId);
-    console.log("USER?", user);
     if (!user) {
       return res.status(404).json({ success: false, error: "User not found" });
     }
 
     if (bookmarked) {
-      user.bookmarked.addToSet(postId);
+      user.BookMarked.push(postId); 
     } else {
-      user.bookmarked.pull(postId);
+      const index = user.BookMarked.indexOf(postId);
+      if (index !== -1) {
+        user.BookMarked.splice(index, 1); 
+      }
     }
 
     await user.save();
@@ -278,14 +281,10 @@ app.post("/user/:id/friends/:friendId", async (req, res) => {
     if (!user.Friends.includes(friendId)) {
       user.Friends.push(friendId);
       await user.save();
+      res.json({ success: true });
+    } else {
+      res.json({ success: false, error: "User is already a friend" });
     }
-
-    if (!friend.Friends.includes(userId)) {
-      friend.Friends.push(userId);
-      await friend.save();
-    }
-
-    res.json({ success: true });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, error: "Failed to establish friendship" });
@@ -334,6 +333,16 @@ app.put("/user/:id/notebook", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Failed to update notebook text" });
+  }
+});
+
+app.get("/users", async (req, res) => {
+  try {
+    const users = await dal.getAllUsers();
+    res.json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, error: "Failed to fetch users" });
   }
 });
 

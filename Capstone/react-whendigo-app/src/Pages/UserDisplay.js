@@ -53,22 +53,24 @@ const UserDisplay = () => {
       }
     }, [id, userId, user, adminKey]);
 
-  const handleFriendship = () => {
-    fetch(`http://localhost:3666/user/${userId}/friends/${id}`, {
-      method: "POST",
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          setIsFriend(true);
-        } else {
-          console.error(data.error);
-        }
+    const handleFriendship = () => {
+      fetch(`http://localhost:3666/user/${userId}/friends/${id}`, {
+        method: "POST",
       })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            setIsFriend(true);
+          } else {
+            console.error(data.error);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    };
+
+  
 
   
 
