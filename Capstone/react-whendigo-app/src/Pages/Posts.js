@@ -3,6 +3,7 @@ import Nav from "./Nav";
 
 const Posts = () => {
   const [items, setPosts] = useState([]);
+  const [itemImg, setItemImg] = useState("");
   const userId = sessionStorage.getItem('userId');
   const [comment, setComment] = useState("");
   const [user, setUser] = useState(null);
@@ -223,6 +224,12 @@ const Posts = () => {
     }
   };
 
+  useEffect(() => {
+    if (items && items.postImg) {
+      setItemImg(`http://localhost:3666${items.postImg}`);
+    }
+  }, [items]);
+
   return (
     <div>
       <div>
@@ -231,15 +238,19 @@ const Posts = () => {
 
       <div className="ContentBox">
         <div className="spacer"></div>
-        <h2 className="right">Post Feed:</h2>
-        <div className="spacer"></div>
+        <div id="gradient"></div>
+        <div id="card">
+        <div className='spacer3'></div>
+        <h1 className="TextSize">Post Feed</h1>
+        </div>
+        <div className="spacer3"></div>
         {items.map((item) => {
           console.log("Comments:", item.comments);
           const likeStatus = item.likes.includes(userId) ? "liked" : item.dislikes.includes(userId) ? "disliked" : null;
           return (
             <div key={item.id} className="PostBox">
               <h3>{item.postDate}</h3>
-              <p>{item.postImg}</p>
+              <img  src={itemImg} alt="PostImg" />
               <p>{item.postBody}</p>
               <p>Likes: {item.likes.length}</p>
               <p>Dislikes: {item.dislikes.length}</p>

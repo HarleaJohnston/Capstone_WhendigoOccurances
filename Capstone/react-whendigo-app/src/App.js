@@ -2,7 +2,6 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'jquery/dist/jquery.min.js'
 import 'bootstrap/dist/js/bootstrap.min.js'
-import { Link } from 'react-router-dom';
 import Nav from './Pages/Nav';
 
 function App() {
@@ -23,7 +22,7 @@ function App() {
                   <div className="Center">
                         <div className='Center'>
                             <div className="Column">
-                                  <div className="Row">
+                                <div className="Row">
                                 <div className='Box'>
                                     <img className="ImgSize" src={process.env.PUBLIC_URL + '/WhendigoSign.png'} alt='Dont come here'></img>
                                   </div>

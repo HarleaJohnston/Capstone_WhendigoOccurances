@@ -61,12 +61,21 @@ app.get("/post/:id", async (req, res) => {
     res.json(post);
 });
 
-app.put('/post/update/:id', async (req, res) => {
-    const post = req.body;
-    const id = req.params.id;
-    const updated = await dal.update(id, post)
+app.put('/post/update/:id', upload.single('postImg'), async (req, res) => {
+  const post = req.body;
+  const id = req.params.id;
+
+  try {
+    if (req.file) {
+      post.postImg = `/images/posts/${req.file.filename}`;
+    }
+
+    const updated = await dal.update(id, post);
     res.json(updated);
-  });
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating post' });
+  }
+});
 
 app.get("/post/delete/:id", async (req, res) => {
     const id = req.params.id;

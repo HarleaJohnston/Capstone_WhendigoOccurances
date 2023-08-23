@@ -8,6 +8,7 @@ function UserProfile() {
   const [userImg, setUserImg] = useState("");
   const [notebookText, setNotebookText] = useState('');
   const [items, setItems] = useState([]);
+  const [itemImg, setItemImg] = useState("");
   const userId = sessionStorage.getItem('userId');
   const isAdmin = user && user.Key === 'a84640d6-1c42-41aa-a53f-783edd2b4e64'; 
   const [allUsers, setAllUsers] = useState([]);
@@ -31,9 +32,17 @@ function UserProfile() {
       });
   }, [userId]);
 
-  // useEffect(() => {
-  //   setUserImg(`http://localhost:3666${user.Img}`);
-  // }, [user]);
+  useEffect(() => {
+    if (user && user.Img) {
+      setUserImg(`http://localhost:3666${user.Img}`);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (items && items.postImg) {
+      setItemImg(`http://localhost:3666${items.postImg}`);
+    }
+  }, [items]);
 
   useEffect(() => {
     console.log('Fetching post data...');
@@ -100,25 +109,40 @@ function UserProfile() {
     }
   }, [loggedInUserId, allUsers]);
   
+  const handleDeletePost = (postId) => {
+    if (window.confirm('Are you sure you want to delete this post?')) {
+      fetch(`http://localhost:3666/post/delete/${postId}`, {
+        method: 'GET',
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Post deleted successfully:', data);
+          setItems(items.filter(item => item._id !== postId));
+        })
+        .catch(error => {
+          console.error('Error deleting post:', error);
+        });
+    }
+  };
 
   return (
-    <div className='Column'>
+    <div className=''>
       <div>
         <Nav/>
       </div>
       <div className='ContentBox2'>
         {user ? (
           <div>
-            <div className='Row3'>
+            <div className='ProfileInfo'>
               <div className='Center'>
-                <div>
+              <div id="gradient"></div>
+              <div id="card">
                 <img className='ImgSize2' src={userImg} alt="Profile" />
-                </div>
-                <div className='Profile'>
-                  <h3>Username: {user.UserName}</h3>
-                  <p>Pronouns: {user.Name}</p>
-                  <p>Bio: {user.Bio}</p>
-                  <Link to='/updateUser'>
+                <h3>{user.UserName}</h3>
+                <p>Pronouns: {user.Name}</p>
+                <p>Location: {user.Location}</p>
+                <p>Bio: {user.Bio}</p>
+                <Link to='/updateUser'>
                     <button>Edit Profile</button>
                   </Link>
                   <div>
@@ -142,22 +166,39 @@ function UserProfile() {
                   </div>
                 </div>
               </div>
-            </div>
+              </div>
+              <div className='spacer2'></div>
+
             {isAdmin && (
               <div>
                 <NavLink to='/create' className={({isActive, isPending}) => isPending ? "Pending" : isActive ? "Active" : ""}>
                         <button>Create</button>
                     </NavLink>
 
+                    <div className='spacer'></div>
+                  <div className='Center2'>
+                    <div className='Column'>
+
                     {items.map((item) => (
-                  <div key={item.id} className="PostBox">
-                    <h3>{item.postDate}</h3>
-                    <p>{item.postImg}</p>
-                    <p>{item.postBody}</p>
-                    <p>Likes: {item.likes.length}</p>
-                    <p>Dislikes: {item.dislikes.length}</p>
+                        <div key={item.id} className="PostBox2">
+                          <h3>{item.postDate}</h3>
+                          <img  src={itemImg} alt="PostImg" />
+                          <p>{item.postBody}</p>
+                          <p>Likes: {item.likes.length}</p>
+                          <p>Dislikes: {item.dislikes.length}</p>
+                          {isAdmin && (
+                            <div>
+                              <NavLink to={`/update/${item._id}`} className={({isActive, isPending}) => isPending ? "Pending" : isActive ? "Active" : ""}>
+                                <button>Update</button>
+                              </NavLink>
+                              <button onClick={() => handleDeletePost(item._id)}>Delete</button>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                      </div>
                   </div>
-                ))}
+
               </div>
             )}
             {!isAdmin && ( 

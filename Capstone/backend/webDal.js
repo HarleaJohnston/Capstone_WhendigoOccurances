@@ -39,6 +39,7 @@ const user = new Schema(
     BookMarked: Array,
     NoteBook: String,
     Friends: Array,
+    Location: String
   },
   { collection: collectionTwo }
 );
@@ -86,12 +87,17 @@ exports.DAL = {
         
     },
     update: async (id, data) => {
-        try {
-            const updatedData = await postModel.findOneAndUpdate({_id: id}, data, {updated: true});
-            return updatedData;
-        } catch {
-            res.json({Message:"couldn't update"})
-        }
+      try {
+        const updatedData = await postModel.findOneAndUpdate(
+          { _id: id },
+          data,
+          { new: true }
+        );
+        return updatedData;
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
     },
     getPost: async () => {
         let filter = {};

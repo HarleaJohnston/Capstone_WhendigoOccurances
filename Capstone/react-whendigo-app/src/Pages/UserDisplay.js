@@ -5,11 +5,18 @@ import Nav from "./Nav";
 const UserDisplay = () => {
   const { id } = useParams();
   const [user, setUser] = useState(null);
+  const [userImg, setUserImg] = useState("");
   const userId = sessionStorage.getItem('userId');
   const [isFriend, setIsFriend] = useState(false);
   const [notebookText, setNotebookText] = useState('');
   const [posts, setPosts] = useState([]);
   const adminKey = 'a84640d6-1c42-41aa-a53f-783edd2b4e64';
+  
+  useEffect(() => {
+    if (user && user.Img) {
+      setUserImg(`http://localhost:3666${user.Img}`);
+    }
+  }, [user]);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -83,13 +90,13 @@ const UserDisplay = () => {
       <div>
         <Nav />
       </div>
-        <div className='Profile'>
-        <h2>User Profile</h2>
-        <p>Email: {user.Gmail}</p>
-        <p>Username: {user.UserName}</p>
+      <div>
+      <div id="gradient"></div>
+        <div id="card">
+        <img className='ImgSize2' src={userImg} alt="Profile" />
+        <h2>{user.UserName}</h2>
+        <p>Pronouns: {user.Name}</p>
         <p>Bio: {user.Bio}</p>
-        <p>Name: {user.Name}</p>
-        <p>Img: {user.Img}</p>
         {userId && userId !== id && !isFriend && (
             <button onClick={handleFriendship}>Add Friend</button>
         )}
@@ -112,6 +119,7 @@ const UserDisplay = () => {
           ))}
         </div>
       )}
+    </div>
     </div>
 
   );

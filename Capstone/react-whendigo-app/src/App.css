@@ -51,6 +51,14 @@ body{
   justify-content: center;
 }
 
+.Center2{
+  display: flex;
+  align-items: center;
+  justify-self: center;
+  margin-left: 15%;
+  margin-right: 10%;
+}
+
 .Column{
   display: flex;
   flex-direction: column;
@@ -59,10 +67,7 @@ body{
 .Row{
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  background-color: #F1EFED;
   border-radius: 7px;
-  width: 75%;
   margin: 0 auto; 
 }
 
@@ -90,31 +95,34 @@ body{
   display: flex;
   flex-direction: column;
   margin: 2%;
+  width: 500px
 }
 
 .Box2{
   margin: 2%;
+  padding: 2%;
+  width: 600px;
+  background-color: #766B4E;
+  border-radius: 7%;
 }
 
 .Box3{
   display: flex;
-  flex-direction: center;
+  flex-direction: column;
   margin: 2%;
+  width: 600px
 }
 
-.ImgSize{
-  width: 600px;
-
-}
-
-.ImgSize2{
-  width: 60%;
-  border-radius: 180px;
-
-}
 
 .spacer{
   margin: 20px;
+}
+
+.spacer2{
+  margin: 100px;
+}
+.spacer3{
+  margin: 90px;
 }
 
 .FontSize{
@@ -124,7 +132,7 @@ body{
 
 .FontSize2{
   font-size: 20px;
-  font-family: Font;
+  font-family: courier;
 }
 
 .HeaderFont{
@@ -164,6 +172,16 @@ padding: 2px 5px;
   flex-direction: column;
 }
 
+.PostBox2{
+  display: flex;
+  background-color: #F1EFED;
+  border-radius: 7px;
+  width: 150%;
+  margin-bottom: 20px;
+  padding: 5px;
+  flex-direction: column;
+}
+
 .SignLogBox{
   display: flex;
   justify-self: center;
@@ -174,4 +192,107 @@ padding: 2px 5px;
   border-radius: 7px;
   width: 50%;
   margin: 0 auto; 
+}
+
+ul.nav li a, ul.nav li a:visited {
+  color: white !important;
+  }
+  
+  ul.nav li a:hover, ul.nav li a:active {
+  color: wheat !important;
+  }
+  
+  ul.nav li.active a {
+  color: brown !important;
+  }
+
+/* Profile CSS */
+/*Found the styling with a free to use profile styling webside here -> https://www.sliderrevolution.com/resources/bootstrap-profile/*/
+
+.left {
+  left: 25px;
+}
+
+.right {
+  right: 25px;
+}
+
+.center {
+  text-align: center;
+}
+
+.bottom {
+  position: absolute;
+  bottom: 25px;
+}
+
+#gradient {
+  background: #999955;
+  background-image: linear-gradient(#DAB046 20%, #D73B25 20%, #D73B25 40%, #C71B25 40%, #C71B25 60%, #961A39 60%, #961A39 80%, #601035 80%);
+  margin: 0 auto;
+  margin-top: 100px;
+  width: 100%;
+  height: 150px;
+}
+
+#gradient:after {
+  content: "";
+  position: absolute;
+  background: #E9E2D0;
+  left: 50%;
+  margin-top: -67.5px;
+  margin-left: -270px;
+  padding-left: 20px;
+  border-radius: 5px;
+  width: 520px;
+  height: 275px;
+  z-index: -1;
+}
+
+#card {
+  position: absolute;
+  width: 750px;
+  height: 325px;
+  padding: 25px;
+  padding-top: 0;
+  padding-bottom: 0;
+  left: 50%;
+  top: 105px;
+  margin-left: -350px;
+  background: #E9E2D0;
+  box-shadow: -20px 0 35px -25px black, 20px 0 35px -25px black;
+  z-index: 5;
+}
+
+#card img {
+  width: 300px;
+  float: left;
+  border-radius: 180px;
+  margin-right: 20px;
+}
+
+#card h2 {
+  font-family: courier;
+  color: #333;
+  margin: 0 auto;
+  padding: 0;
+  font-size: 15pt;
+}
+
+#card h1 {
+  font-family: HeaderFont;
+  color: #333;
+  margin: 0 auto;
+  padding: 0;
+  font-size: 90pt;
+}
+
+#card p {
+  font-family: courier;
+  color: #555;
+  font-size: 13px;
+}
+
+#card span {
+  font-family: courier;
 }

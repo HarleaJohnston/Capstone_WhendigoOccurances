@@ -4,7 +4,6 @@ import './index.css';
 import App from './App';
 import { createBrowserRouter, RouterProvider, useRoutes } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
-import Profile from './Pages/Profile'
 import Posts from './Pages/Posts'
 import Collections from './Pages/Collections';
 import Create from './CRUD/Create'
@@ -28,10 +27,6 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: '/profile',
-    element: <Profile />,
-  },
-  {
     path: '/posts',
     element: <Posts/>,
   },
@@ -44,11 +39,11 @@ const router = createBrowserRouter([
     element: <Create/>,
   },
   {
-    path: '/update',
+    path: '/update/:itemId',
     element: <Update/>,
   },
   {
-    path: '/delete',
+    path: '/delete/:id',
     element: <Delete/>,
   },
   {
