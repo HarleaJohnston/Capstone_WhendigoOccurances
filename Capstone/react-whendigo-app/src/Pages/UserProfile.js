@@ -135,12 +135,13 @@ function UserProfile() {
           <div>
             <div className='ProfileInfo'>
               <div className='Center'>
-              <div id="gradient"></div>
-              <div id="card">
-                <img className='ImgSize2' src={userImg} alt="Profile" />
+              <div id="gradient2"></div>
+              <div className='CenteredCard'>
+              <div id="card2">
+                <img src={userImg} alt="Profile" />
                 <h3>{user.UserName}</h3>
                 <p>Pronouns: {user.Name}</p>
-                <p>Location: {user.Location}</p>
+                <p>Location: {isAdmin ? user.Location : isAdmin}</p>
                 <p>Bio: {user.Bio}</p>
                 <Link to='/updateUser'>
                     <button>Edit Profile</button>
@@ -164,6 +165,7 @@ function UserProfile() {
                     </div>
                   )}
                   </div>
+                </div>
                 </div>
               </div>
               </div>

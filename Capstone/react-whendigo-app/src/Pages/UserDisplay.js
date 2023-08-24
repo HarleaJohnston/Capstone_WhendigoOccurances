@@ -96,6 +96,7 @@ const UserDisplay = () => {
         <img className='ImgSize2' src={userImg} alt="Profile" />
         <h2>{user.UserName}</h2>
         <p>Pronouns: {user.Name}</p>
+        {user.Key === adminKey && <p>Location: {user.Location}</p>}
         <p>Bio: {user.Bio}</p>
         {userId && userId !== id && !isFriend && (
             <button onClick={handleFriendship}>Add Friend</button>

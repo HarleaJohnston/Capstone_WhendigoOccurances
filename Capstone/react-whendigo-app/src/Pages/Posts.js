@@ -230,6 +230,7 @@ const Posts = () => {
     }
   }, [items]);
 
+
   return (
     <div>
       <div>
@@ -239,16 +240,27 @@ const Posts = () => {
       <div className="ContentBox">
         <div className="spacer"></div>
         <div id="gradient"></div>
-        <div id="card">
-        <div className='spacer3'></div>
-        <h1 className="TextSize">Post Feed</h1>
+          <div className="CenteredCard">
+            <div id="card">
+            <div className='spacer3'></div>
+            <h1>Post Feed</h1>
+          </div>
         </div>
-        <div className="spacer3"></div>
+        <div className="spacer4"></div>
         {items.map((item) => {
           console.log("Comments:", item.comments);
           const likeStatus = item.likes.includes(userId) ? "liked" : item.dislikes.includes(userId) ? "disliked" : null;
           return (
             <div key={item.id} className="PostBox">
+                <p>
+                  <strong>
+                  {userId === '64de519894f9c85149d2b773' ? (
+                      <a href={`/userProfile`}>Quillian Renae</a>
+                    ) : (
+                      <a href={`/user/64de519894f9c85149d2b773`}>Quillian Renae</a>
+                    )}
+                  </strong>
+                </p>
               <h3>{item.postDate}</h3>
               <img  src={itemImg} alt="PostImg" />
               <p>{item.postBody}</p>
