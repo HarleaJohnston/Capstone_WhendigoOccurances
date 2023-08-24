@@ -122,6 +122,9 @@ body {
   width: 100%;
 }
 
+.ImgSize{
+  width: 600px;
+}
 
 .Box{
   display: flex;

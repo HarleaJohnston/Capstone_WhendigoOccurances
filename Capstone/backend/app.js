@@ -87,10 +87,19 @@ app.get("/post/delete/:id", async (req, res) => {
   }
 });
 
-app.post("/post/create", async (req,res) => {
-let post = await dal.create(req.body.postDate, req.body.postBody, req.body.postImg)
-return res.json({message: "Post created successfully"});
-
+app.post("/post/create", upload.single('postImg'), async (req, res) => {
+  const post = req.body;
+  
+  if (req.file) {
+    post.postImg = `/images/posts/${req.file.filename}`;
+  }
+  
+  try {
+    const createdPost = await dal.create(post.postDate, post.postBody, post.postImg);
+    return res.json({ message: "Post created successfully", post: createdPost });
+  } catch (error) {
+    res.status(500).json({ message: 'Error creating post' });
+  }
 });
 
 app.put("/user/:id", upload.single('Img'), async (req, res) => {

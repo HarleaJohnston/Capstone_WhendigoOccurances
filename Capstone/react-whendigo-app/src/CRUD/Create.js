@@ -1,69 +1,67 @@
-import React from 'react'
-import { useState } from 'react';
+import React, { useState } from 'react';
+
 
 const Create = () => {
-    const [date, setDate] = useState('');
-    const [body, setBody] = useState('');
-    const [img, setImg] = useState('');
-  
-    const handleSubmit = (e) => {
-      e.preventDefault();
-  
-      const create = {
-        postDate: date,
-        postBody: body,
-        postImg: img
-      };
-  
-      fetch('http://localhost:3666/post/create', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(create)
+  const [date, setDate] = useState('');
+  const [body, setBody] = useState('');
+  const [img, setImg] = useState(null); 
+
+  const handleImageUpload = (e) => {
+    const imageFile = e.target.files[0];
+    setImg(imageFile);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append('postDate', date);
+    formData.append('postBody', body);
+    formData.append('postImg', img);
+
+    fetch('http://localhost:3666/post/create', {
+      method: 'POST',
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setDate('');
+        setBody('');
+        setImg(null);
       })
-        .then(response => response.json())
-        .then(data => {
-          console.log(data);
-          setDate('');
-          setBody('');
-          setImg('');
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    };
-  
-    return (
-      <div className='Row'>
-        <h2>Post:</h2>
-        <form onSubmit={handleSubmit}>
-          <label>
-            Date:
-            <input
-              type="text"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-            />
-          </label>
-          <br />
-          <label>
-            Post Body:
-            <input
-              type="text"
-              value={body}
-              onChange={(e) => setBody(e.target.value)}
-            />
-          </label>
-          <br />
-          <label>
-            Img:
-            <input type="text" value={img} onChange={(e) => setImg(e.target.value)}/>
-          </label>
-          <br />
-          <button type="submit">Create</button>
-        </form>
-      </div>
-    );
-  }
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  return (
+  <div className='SignLogBox'>
+    <h2>Create Post</h2>
+      <form onSubmit={handleSubmit}>
+        <div class="form-floating">
+        <label>
+          Date:
+          <input type='text' value={date} onChange={(e) => setDate(e.target.value)} />
+        </label>
+        </div>
+        <div class="form-floating">
+        <label>
+          Post Body:
+          <input type='text' value={body} onChange={(e) => setBody(e.target.value)} />
+        </label>
+        </div>
+        <div class="form-floating">
+        <label>
+          Img:
+          <input type='file' accept='image/*' onChange={handleImageUpload} />
+        </label>
+        </div>
+        <button class="btn btn-primary w-100 py-2" type="submit">Create</button>
+        <p class="mt-5 mb-3 text-body-secondary">© 2017–2023</p>
+      </form>
+</div>
+  );
+};
+
 export default Create;

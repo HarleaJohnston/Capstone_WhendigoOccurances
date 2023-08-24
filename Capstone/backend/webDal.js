@@ -245,6 +245,24 @@ exports.DAL = {
           throw error;
         }
       },
+      createComment: async (postId, userId, userName, text) => {
+        try {
+          const newComment = new commentModel({
+            postId,
+            userId,
+            userName, 
+            text,
+          });
+      
+          const savedComment = await newComment.save();
+          return savedComment;
+
+        }catch (error) {
+          console.error(error);
+          throw error;
+        }
+      },
+
       getCommentsForPost: async (postId) => {
         try {
           const comments = await commentModel.find({ postId }).exec();
