@@ -63,6 +63,8 @@ body {
   max-width: 1200px;
   box-sizing: border-box;
   position: relative;
+  margin-top: -24px;
+  box-shadow: -20px 0 35px -25px black, 20px 0 35px -25px black;
 }
 
 .ContentBox2{
@@ -73,9 +75,9 @@ body {
   text-align: center;
   margin-left: 10%;
   margin-right: 10%;
-  border-radius: 15px;
   max-width: 1200px;
-
+  margin-top: -24px;
+  box-shadow: -20px 0 35px -25px black, 20px 0 35px -25px black;
 }
 
 .Center{
@@ -92,6 +94,11 @@ body {
 }
 
 .Column{
+  display: flex;
+  flex-direction: column;
+}
+
+.Column2{
   display: flex;
   flex-direction: column;
 }
@@ -218,6 +225,10 @@ body {
   margin: 40px;
 }
 
+.spacer5{
+  margin-top: 150px;
+}
+
 .FontSize{
   font-size: 50px;
   font-family: HeaderFont;
@@ -263,6 +274,15 @@ padding: 2px 5px;
   margin-bottom: 20px;
   padding: 5px;
   flex-direction: column;
+  box-shadow: -20px 0 35px -25px black, 20px 0 35px -25px black;
+}
+
+.Left{
+  display: flex;
+}
+
+.Icon{
+  margin: 10px;
 }
 
 .PostBox2{
@@ -273,6 +293,7 @@ padding: 2px 5px;
   margin-bottom: 20px;
   padding: 5px;
   flex-direction: column;
+  box-shadow: -20px 0 35px -25px black, 20px 0 35px -25px black;
 }
 
 .SignLogBox{
@@ -356,7 +377,7 @@ ul.nav li a, ul.nav li a:visited {
   background: #E9E2D0;
   box-shadow: -20px 0 35px -25px black, 20px 0 35px -25px black;
   z-index: 5;
-  margin-top: -230px;
+  margin-top: -320px;
 }
 
 #card h1 {

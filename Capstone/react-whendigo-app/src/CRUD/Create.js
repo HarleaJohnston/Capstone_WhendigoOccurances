@@ -39,26 +39,29 @@ const Create = () => {
   <div className='SignLogBox'>
     <h2>Create Post</h2>
       <form onSubmit={handleSubmit}>
-        <div class="form-floating">
-        <label>
-          Date:
-          <input type='text' value={date} onChange={(e) => setDate(e.target.value)} />
-        </label>
-        </div>
-        <div class="form-floating">
-        <label>
-          Post Body:
-          <input type='text' value={body} onChange={(e) => setBody(e.target.value)} />
-        </label>
-        </div>
-        <div class="form-floating">
-        <label>
-          Img:
-          <input type='file' accept='image/*' onChange={handleImageUpload} />
-        </label>
-        </div>
+        <div className='Column2'>
+
+            <ol>
+            <label>
+                Date:
+                <input type='text' value={date} onChange={(e) => setDate(e.target.value)} />
+              </label>
+            </ol>
+            <ol>
+              <label>
+                Post Body:
+                <input type='text' value={body} onChange={(e) => setBody(e.target.value)} />
+              </label>
+            </ol>
+            <ol>
+              <label>
+                Img:
+                <input type='file' accept='image/*' onChange={handleImageUpload} />
+              </label>
+            </ol>
         <button class="btn btn-primary w-100 py-2" type="submit">Create</button>
         <p class="mt-5 mb-3 text-body-secondary">© 2017–2023</p>
+        </div>
       </form>
 </div>
   );

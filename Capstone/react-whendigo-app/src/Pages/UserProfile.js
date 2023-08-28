@@ -169,25 +169,25 @@ function UserProfile() {
                 </div>
               </div>
               </div>
-              <div className='spacer2'></div>
+              <div className='spacer5'></div>
+
 
             {isAdmin && (
               <div>
                 <NavLink to='/create' className={({isActive, isPending}) => isPending ? "Pending" : isActive ? "Active" : ""}>
                         <button>Create</button>
                     </NavLink>
-
-                    <div className='spacer'></div>
                   <div className='Center2'>
                     <div className='Column'>
+                    <div className='spacer'></div>
 
                     {items.map((item) => (
                         <div key={item.id} className="PostBox2">
-                          <h3>{item.postDate}</h3>
+                          <h3 className='Left'>{item.postDate}</h3>
                           <img  src={itemImg} alt="PostImg" />
                           <p>{item.postBody}</p>
-                          <p>Likes: {item.likes.length}</p>
-                          <p>Dislikes: {item.dislikes.length}</p>
+                          <span>Likes: {item.likes.length}</span>
+                          <span>Dislikes: {item.dislikes.length}</span>
                           {isAdmin && (
                             <div>
                               <NavLink to={`/update/${item._id}`} className={({isActive, isPending}) => isPending ? "Pending" : isActive ? "Active" : ""}>

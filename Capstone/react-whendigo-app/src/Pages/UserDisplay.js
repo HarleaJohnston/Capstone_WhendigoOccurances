@@ -10,6 +10,7 @@ const UserDisplay = () => {
   const [isFriend, setIsFriend] = useState(false);
   const [notebookText, setNotebookText] = useState('');
   const [posts, setPosts] = useState([]);
+  const [itemImg, setItemImg] = useState("");
   const adminKey = 'a84640d6-1c42-41aa-a53f-783edd2b4e64';
   
   useEffect(() => {
@@ -17,6 +18,12 @@ const UserDisplay = () => {
       setUserImg(`http://localhost:3666${user.Img}`);
     }
   }, [user]);
+
+  useEffect(() => {
+    if (posts && posts.postImg) {
+      setItemImg(`http://localhost:3666${posts.postImg}`);
+    }
+  }, [posts]);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -92,7 +99,8 @@ const UserDisplay = () => {
       </div>
       <div>
       <div id="gradient"></div>
-        <div id="card">
+      <div className='CenteredCard'>
+        <div id="card2">
         <img className='ImgSize2' src={userImg} alt="Profile" />
         <h2>{user.UserName}</h2>
         <p>Pronouns: {user.Name}</p>
@@ -114,12 +122,13 @@ const UserDisplay = () => {
           {posts.map((post) => (
             <div key={post._id} className="PostBox">
               <h3>{post.postDate}</h3>
-              <p>{post.postImg}</p>
+              <img  src={itemImg} alt="PostImg" />
               <p>{post.postBody}</p>
             </div>
           ))}
         </div>
       )}
+      </div>
     </div>
     </div>
 

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { FaThumbsUp, FaThumbsDown, FaBookmark, FaRegBookmark } from "react-icons/fa";
 import Nav from "./Nav";
 
 const Posts = () => {
@@ -105,6 +106,7 @@ const Posts = () => {
             return post;
           });
           setPosts(updatedPosts);
+          window.location.reload();
         } else {
           console.error(data.error);
         }
@@ -144,6 +146,7 @@ const Posts = () => {
             return post;
           });
           setPosts(updatedPosts);
+          window.location.reload();
         } else {
           console.error(data.error);
         }
@@ -175,7 +178,7 @@ const Posts = () => {
         },
         body: JSON.stringify({ userId, postId, bookmarked: bookmarkedStatus }),
       })
-
+      window.location.reload();
     } catch (error) {
       console.error("Error while toggling bookmark:", error);
       const revertedPosts = items.map((post) => {
@@ -213,9 +216,9 @@ const Posts = () => {
           }
           return post;
         });
-  
         setPosts(updatedPosts);
         setComment("");
+        window.location.reload();
       } else {
         console.error(data.error);
       }
@@ -248,11 +251,12 @@ const Posts = () => {
         </div>
         <div className="spacer4"></div>
         {items.map((item) => {
+          
           console.log("Comments:", item.comments);
           const likeStatus = item.likes.includes(userId) ? "liked" : item.dislikes.includes(userId) ? "disliked" : null;
           return (
             <div key={item.id} className="PostBox">
-                <p>
+                <p className="Left">
                   <strong>
                   {userId === '64de519894f9c85149d2b773' ? (
                       <a href={`/userProfile`}>Quillian Renae</a>
@@ -261,33 +265,32 @@ const Posts = () => {
                     )}
                   </strong>
                 </p>
-              <h3>{item.postDate}</h3>
+              <h3 className="Left">{item.postDate}</h3>
               <img  src={itemImg} alt="PostImg" />
               <p>{item.postBody}</p>
-              <p>Likes: {item.likes.length}</p>
-              <p>Dislikes: {item.dislikes.length}</p>
+              {/* <p>Likes: {item.likes.length}</p>
+              <p>Dislikes: {item.dislikes.length}</p> */}
+              <span>
               {userId && (
                 <>
-                  <button
-                    onClick={() => handleLike(item._id, likeStatus)}
-                    disabled={!userId}
-                  >
-                    {likeStatus === "liked" ? "Unlike" : "Like"}
-                  </button>
-                  <button
-                    onClick={() => handleDislike(item._id, likeStatus)}
-                    disabled={!userId}
-                  >
-                    {likeStatus === "disliked" ? "Undislike" : "Dislike" }
-                  </button>
-                </>
+                <span className="Icon" onClick={() => handleLike(item._id, likeStatus)}>
+                  {likeStatus === "liked" ? <FaThumbsUp color="blue" /> : <FaThumbsUp color="gray" />}
+                </span>
+                <span>Likes: {item.likes.length}</span>
+                <span  className="Icon" onClick={() => handleDislike(item._id, likeStatus)}>
+                  {likeStatus === "disliked" ? <FaThumbsDown color="red" /> : <FaThumbsDown color="gray" />}
+                </span>
+                <span>Dislikes: {item.dislikes.length}</span>
+              </>
+            )}
+            {userId && (
+              <span className="Icon" onClick={() => handleBookmark(item._id, item.bookmarked)}>
+                {item.bookmarked ? <FaBookmark color="green" /> : <FaRegBookmark color="gray" />}
+              </span>
               )}
-              {userId && (
-                <button onClick={() => handleBookmark(item._id, item.bookmarked)} disabled={!userId}>
-                  {item.bookmarked ? "Bookmark" : "Bookmarked"}
-                </button>
-              )}
+              </span>
                 <div className="spacer"></div>
+                <span>
                 <input type="text" placeholder="Write a comment..." value={comment} onChange={(e) => setComment(e.target.value)} />
                 <button onClick={() => handleComment(item._id, user.UserName)} disabled={!userId}>
                   Add Comment
@@ -296,7 +299,7 @@ const Posts = () => {
                 {commentsMap[item._id] && commentsMap[item._id].length > 0 ? (
                   commentsMap[item._id].map((comment) => (
                     <div key={comment._id} className="Comment">
-                      <p>
+                      <p className="Left">
                         <strong>
                           {comment.userId === userId ? (
                             <a href={`/userProfile`}>{comment.userName}</a>
@@ -312,6 +315,7 @@ const Posts = () => {
                       <p>No comments yet.</p>
                     )}
                   </div>
+                </span>
             </div>
           );
         })}
