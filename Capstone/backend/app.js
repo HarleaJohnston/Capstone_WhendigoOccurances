@@ -41,7 +41,21 @@ const storage = multer.diskStorage({
   },
 });
 
+
 const upload = multer({ storage: storage });
+
+const postImageStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'public/images/posts');
+  },
+  filename: function (req, file, cb) {
+    const sanitizedFilename = sanitize(file.originalname);
+    cb(null, sanitizedFilename);
+  },
+});
+
+const postImageUpload = multer({ storage: postImageStorage });
+
 
 app.use(express.static('public'));
 
@@ -61,7 +75,7 @@ app.get("/post/:id", async (req, res) => {
     res.json(post);
 });
 
-app.put('/post/update/:id', upload.single('postImg'), async (req, res) => {
+app.put('/post/update/:id', postImageUpload.single('postImg'), async (req, res) => {
   const post = req.body;
   const id = req.params.id;
 
@@ -87,7 +101,7 @@ app.get("/post/delete/:id", async (req, res) => {
   }
 });
 
-app.post("/post/create", upload.single('postImg'), async (req, res) => {
+app.post("/post/create", postImageUpload.single('postImg'), async (req, res) => {
   const post = req.body;
   
   if (req.file) {

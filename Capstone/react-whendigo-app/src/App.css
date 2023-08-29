@@ -377,7 +377,7 @@ ul.nav li a, ul.nav li a:visited {
   background: #E9E2D0;
   box-shadow: -20px 0 35px -25px black, 20px 0 35px -25px black;
   z-index: 5;
-  margin-top: -320px;
+  margin-top: -200px;
 }
 
 #card h1 {

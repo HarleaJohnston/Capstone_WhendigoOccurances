@@ -14,6 +14,8 @@ function UserProfile() {
   const [allUsers, setAllUsers] = useState([]);
   const [loggedInUserFriendedBy, setLoggedInUserFriendedBy] = useState([]);
   const loggedInUserId = sessionStorage.getItem('userId');
+  const [bookmarkDropdownOpen, setBookmarkDropdownOpen] = useState(false);
+
 
   useEffect(() => {
     console.log('Fetching user data...');
@@ -38,11 +40,6 @@ function UserProfile() {
     }
   }, [user]);
 
-  useEffect(() => {
-    if (items && items.postImg) {
-      setItemImg(`http://localhost:3666${items.postImg}`);
-    }
-  }, [items]);
 
   useEffect(() => {
     console.log('Fetching post data...');
@@ -56,6 +53,12 @@ function UserProfile() {
         console.error('Error fetching post data:', error);
       });
   }, []);
+
+  useEffect(() => {
+    if (items && items.postImg) {
+      setItemImg(`http://localhost:3666${items.postImg}`);
+    }
+  }, [items]);
 
   const handleNotebookChange = (event) => {
     setNotebookText(event.target.value);
@@ -125,6 +128,7 @@ function UserProfile() {
     }
   };
 
+  
   return (
     <div className=''>
       <div>

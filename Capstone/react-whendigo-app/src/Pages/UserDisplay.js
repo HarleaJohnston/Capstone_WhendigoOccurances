@@ -13,17 +13,6 @@ const UserDisplay = () => {
   const [itemImg, setItemImg] = useState("");
   const adminKey = 'a84640d6-1c42-41aa-a53f-783edd2b4e64';
   
-  useEffect(() => {
-    if (user && user.Img) {
-      setUserImg(`http://localhost:3666${user.Img}`);
-    }
-  }, [user]);
-
-  useEffect(() => {
-    if (posts && posts.postImg) {
-      setItemImg(`http://localhost:3666${posts.postImg}`);
-    }
-  }, [posts]);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -37,6 +26,7 @@ const UserDisplay = () => {
       }
     };
 
+    
     const fetchFriendStatus = async () => {
       try {
         const response = await fetch(`http://localhost:3666/user/${userId}/friends/${id}`);
@@ -84,13 +74,23 @@ const UserDisplay = () => {
         });
     };
 
+    useEffect(() => {
+      if (user && user.Img) {
+        setUserImg(`http://localhost:3666${user.Img}`);
+      }
+    }, [user]);
   
-
-  
+    useEffect(() => {
+      if (posts && posts.postImg) {
+        setItemImg(`http://localhost:3666${posts.postImg}`);
+      }
+    }, [posts]);
 
   if (!user) {
     return <p>Loading...</p>;
   }
+
+  
 
   return (
     <div>
@@ -98,23 +98,28 @@ const UserDisplay = () => {
         <Nav />
       </div>
       <div>
+      <div className="spacer2"></div>
       <div id="gradient"></div>
       <div className='CenteredCard'>
         <div id="card2">
         <img className='ImgSize2' src={userImg} alt="Profile" />
-        <h2>{user.UserName}</h2>
+        <h3> 
+          <strong>
+            {user.UserName}
+          </strong>
+        </h3>
         <p>Pronouns: {user.Name}</p>
         {user.Key === adminKey && <p>Location: {user.Location}</p>}
         <p>Bio: {user.Bio}</p>
         {userId && userId !== id && !isFriend && (
             <button onClick={handleFriendship}>Add Friend</button>
         )}
-        {isFriend && user.NoteBook && ( 
-            <div>
-            <h3>Notebook</h3>
-            <p>{notebookText}</p>
-            </div>
-        )}
+          {isFriend && user.NoteBook && ( 
+              <div>
+              <h3>Notebook:</h3>
+              <p>{notebookText}</p>
+              </div>
+          )}
         </div>
         {user.Key === adminKey && (
         <div>

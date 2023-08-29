@@ -100,7 +100,6 @@ const Posts = () => {
         if (data.success) {
           const updatedPosts = items.map(post => {
             if (post.id === postId) {
-              console.log(postId)
               return { ...post, likeStatus: newStatus };
             }
             return post;
@@ -230,6 +229,7 @@ const Posts = () => {
   useEffect(() => {
     if (items && items.postImg) {
       setItemImg(`http://localhost:3666${items.postImg}`);
+      console.log(setItemImg);
     }
   }, [items]);
 
@@ -252,7 +252,6 @@ const Posts = () => {
         <div className="spacer4"></div>
         {items.map((item) => {
           
-          console.log("Comments:", item.comments);
           const likeStatus = item.likes.includes(userId) ? "liked" : item.dislikes.includes(userId) ? "disliked" : null;
           return (
             <div key={item.id} className="PostBox">

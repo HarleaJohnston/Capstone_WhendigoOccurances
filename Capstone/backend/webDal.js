@@ -208,7 +208,7 @@ exports.DAL = {
           Key: key,
           Gmail: email,
           Username: username,
-          Img: "public/images/profile-pictures/default-user.png", 
+          Img: "/images/profile-pictures/default-user.png", 
           Password: await bcrypt.hash(password, 10),
         };
 
