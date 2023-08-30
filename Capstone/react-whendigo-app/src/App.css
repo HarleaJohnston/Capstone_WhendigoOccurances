@@ -320,6 +320,15 @@ ul.nav li a, ul.nav li a:visited {
   color: brown !important;
   }
 
+  .imgSize{
+    height: 600px;
+  }
+  .disabledImg {
+    opacity: 0.5; 
+    pointer-events: none; 
+   
+  }
+
 /* Profile CSS */
 /*Found the styling with a free to use profile styling webside here -> https://www.sliderrevolution.com/resources/bootstrap-profile/*/
 
@@ -377,7 +386,7 @@ ul.nav li a, ul.nav li a:visited {
   background: #E9E2D0;
   box-shadow: -20px 0 35px -25px black, 20px 0 35px -25px black;
   z-index: 5;
-  margin-top: -200px;
+  margin-top: -560px;
 }
 
 #card h1 {
