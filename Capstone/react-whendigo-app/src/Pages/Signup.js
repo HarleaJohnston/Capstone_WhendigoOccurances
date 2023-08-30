@@ -31,10 +31,32 @@ const Signup = () => {
       } else {
         console.log('Signup failed:', data.Message);
       }
+
+    const loginResponse = await fetch('http://localhost:3666/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    });
+
+      const loginData = await loginResponse.json();
+
+      if (loginData.success) {
+        sessionStorage.setItem('sessionKey', loginData.key);
+        sessionStorage.setItem('userId', loginData.userId);
+        navigate('/');
+      } else {
+        console.log('Login after sign-up failed:', loginData.Message);
+      }
     } catch (error) {
-      console.error('An error occurred during signup:', error);
+      console.error('An error occurred during sign-up:', error);
     }
-  };
+};
+
 
   return (
     <div className='SignLogBox'>

@@ -266,7 +266,9 @@ const Posts = () => {
                   </strong>
                 </p>
               <h3 className="Left">{item.postDate}</h3>
-              <img className={`imgSize ${item.postImg === null ? "disabledImg" : ""}`} src={`http://localhost:3666${item.postImg}`} alt="PostImg"/>
+              {item.postImg !== "null" ? (
+                <img className="imgSize" src={`http://localhost:3666${item.postImg}`} alt="PostImg" />
+              ) : null}
               <p>{item.postBody}</p>
               {/* <p>Likes: {item.likes.length}</p>
               <p>Dislikes: {item.dislikes.length}</p> */}

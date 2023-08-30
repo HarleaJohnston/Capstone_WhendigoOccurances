@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 
 const Create = () => {
   const [date, setDate] = useState('');
   const [body, setBody] = useState('');
   const [img, setImg] = useState(null); 
+  const navigate = useNavigate();
 
   const handleImageUpload = (e) => {
     const imageFile = e.target.files[0];
@@ -29,6 +31,7 @@ const Create = () => {
         setDate('');
         setBody('');
         setImg(null);
+        navigate('/UserProfile');
       })
       .catch((error) => {
         console.error(error);

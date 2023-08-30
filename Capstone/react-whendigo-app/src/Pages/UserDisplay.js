@@ -97,44 +97,45 @@ const UserDisplay = () => {
       <div>
         <Nav />
       </div>
-      <div>
-      <div className="spacer2"></div>
-      <div id="gradient"></div>
-      <div className='CenteredCard'>
-        <div id="card2">
-        <img className='ImgSize2' src={userImg} alt="Profile" />
-        <h3> 
-          <strong>
-            {user.UserName}
-          </strong>
-        </h3>
-        <p>Pronouns: {user.Name}</p>
-        {user.Key === adminKey && <p>Location: {user.Location}</p>}
-        <p>Bio: {user.Bio}</p>
-        {userId && userId !== id && !isFriend && (
-            <button onClick={handleFriendship}>Add Friend</button>
-        )}
-          {isFriend && user.NoteBook && ( 
-              <div>
-              <h3>Notebook:</h3>
-              <p>{notebookText}</p>
-              </div>
+      <div className='ContentBox2'>
+        <div className="spacer2"></div>
+        <div id="gradient"></div>
+          <div className='CenteredCard'>
+            <div id="card2">
+            <img className='ImgSize2' src={userImg} alt="Profile" />
+            <h3> 
+              <strong>
+                {user.UserName}
+              </strong>
+            </h3>
+            <p>Pronouns: {user.Name}</p>
+            {user.Key === adminKey && <p>Location: {user.Location}</p>}
+            <p>Bio: {user.Bio}</p>
+            {userId && userId !== id && !isFriend && (
+                <button onClick={handleFriendship}>Add Friend</button>
+            )}
+              {isFriend && user.NoteBook && ( 
+                  <div>
+                  <h3>Notebook:</h3>
+                  <p>{notebookText}</p>
+                  </div>
+              )}
+
+            {user.Key === adminKey && (
+            <div className="PostBox">
+              <h3>Posts</h3>
+              {posts.map((post) => (
+                <div key={post._id} className="PostBox">
+                  <h3>{post.postDate}</h3>
+                  <img  src={itemImg} alt="PostImg" />
+                  <p>{post.postBody}</p>
+                </div>
+              ))}
+            </div>        
           )}
+          </div>
         </div>
-        {user.Key === adminKey && (
-        <div>
-          <h3>Posts</h3>
-          {posts.map((post) => (
-            <div key={post._id} className="PostBox">
-              <h3>{post.postDate}</h3>
-              <img  src={itemImg} alt="PostImg" />
-              <p>{post.postBody}</p>
-            </div>
-          ))}
-        </div>
-      )}
       </div>
-    </div>
     </div>
 
   );
