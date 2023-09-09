@@ -188,7 +188,9 @@ function UserProfile() {
                     {items.map((item) => (
                         <div key={item.id} className="PostBox2">
                           <h3 className='Left'>{item.postDate}</h3>
-                          <img  src={itemImg} alt="PostImg" />
+                          {item.postImg !== "null" ? (
+                            <img className="imgSize" src={`http://localhost:3666${item.postImg}`} alt="PostImg" />
+                          ) : null}
                           <p>{item.postBody}</p>
                           <span>Likes: {item.likes.length}</span>
                           <span>Dislikes: {item.dislikes.length}</span>

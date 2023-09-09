@@ -127,7 +127,9 @@ const UserDisplay = () => {
               {posts.map((post) => (
                 <div key={post._id} className="PostBox">
                   <h3>{post.postDate}</h3>
-                  <img  src={itemImg} alt="PostImg" />
+                  {post.postImg !== "null" ? (
+                      <img className="imgSize" src={`http://localhost:3666${post.postImg}`} alt="PostImg" />
+                  ) : null}
                   <p>{post.postBody}</p>
                 </div>
               ))}

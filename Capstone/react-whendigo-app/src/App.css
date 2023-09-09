@@ -321,7 +321,8 @@ ul.nav li a, ul.nav li a:visited {
   }
 
   .imgSize{
-    height: 600px;
+    height: 75%;
+    width: 55%;
   }
   .disabledImg {
     opacity: 0.5; 
@@ -386,7 +387,7 @@ ul.nav li a, ul.nav li a:visited {
   background: #E9E2D0;
   box-shadow: -20px 0 35px -25px black, 20px 0 35px -25px black;
   z-index: 5;
-  margin-top: -420px;
+  margin-top: -370px;
 }
 
 #card h1 {
