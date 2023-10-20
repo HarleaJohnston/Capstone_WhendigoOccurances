@@ -1,0 +1,22 @@
+body{
+    background-image: url("../imgs/clickerBackground.png") ;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.ContentBox{
+    display: flex;
+    justify-self: center;
+    flex-direction: column;
+    background-color: #E5E1CF;
+    align-items: center;
+    text-align: center;
+    margin-left: 10%;
+    margin-right: 10%;
+    max-width: 1200px;
+    box-sizing: border-box;
+    position: relative;
+    margin-top: -24px;
+    box-shadow: -20px 0 35px -25px black, 20px 0 35px -25px black;
+    height: 848px;
+  }

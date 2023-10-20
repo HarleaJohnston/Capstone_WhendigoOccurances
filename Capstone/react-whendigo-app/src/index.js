@@ -16,6 +16,7 @@ import Error2 from './ErrorPage/Error2';
 import UserProfile from './Pages/UserProfile';
 import UpdateUser from './CRUD/UpdateUser';
 import UserDisplay from './Pages/UserDisplay';
+import CookieClicker from './Souls/CookieClicker';
 
 const router = createBrowserRouter([
   {
@@ -75,6 +76,10 @@ const router = createBrowserRouter([
   {
     path: '/user/:id',
     element: <UserDisplay/>,
+  },
+  {
+    path: '/clicker',
+    element: <CookieClicker/>
   }
 ]);
 
