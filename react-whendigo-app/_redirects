@@ -1,0 +1,5 @@
+# Redirect API requests to serverless functions
+/api/* /.netlify/functions/:splat 200
+
+# Handle other routes by serving the React app's index.html
+/* /index.html 200
