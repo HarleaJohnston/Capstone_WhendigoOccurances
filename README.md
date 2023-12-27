@@ -1,3 +1,7 @@
+# About The Project:
+
+This is the base/start to what I wish to become an active ARG site. This is my first start of this project and will probably be simplfied or be change drastically for the final product. This was built for my capstone has I purse my Web Development and Design Degree.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
